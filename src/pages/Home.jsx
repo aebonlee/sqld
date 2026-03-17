@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useAOS } from '../hooks/useAOS';
 import SEOHead from '../components/SEOHead';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Home = () => {
-  useAOS();
   const { t } = useLanguage();
 
   const subject1Curriculum = [
