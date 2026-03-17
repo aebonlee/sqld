@@ -383,6 +383,26 @@ sqld-repo/
 
 ---
 
+### 2026-03-18 (Day 1 - 5차) - 레이아웃 정렬 및 너비 개선
+
+#### 수정 내용
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `site.css` | `.lesson-page` max-width 900px → **1080px**, padding 20px → **40px** (콘텐츠 영역 확장) |
+| 2 | `site.css` | `.home-curriculum-grid` `repeat(4, 1fr)` → **`auto-fit, minmax(220px, 1fr)`** (카드 수에 맞게 자동 정렬) |
+| 3 | `site.css` | `.home-commands-grid` `repeat(5, 1fr)` → **`auto-fit, minmax(180px, 1fr)`** (SQL 레퍼런스 카드 자동 정렬) |
+| 4 | `site.css` | `.content-card .table-wrapper` 추가 (테이블 가로 스크롤 지원) |
+| 5 | `responsive.css` | 1100px/768px/480px 고정 열수 오버라이드 제거 (auto-fit이 자동 처리) |
+
+#### 개선 효과
+- 콘텐츠 페이지가 화면 너비를 더 효율적으로 활용 (900px → 1080px)
+- 홈 커리큘럼 카드가 카드 수에 맞게 자동으로 균등 배치 (3개면 3열, 4개면 4열)
+- SQL 레퍼런스 카드 5개가 화면 크기에 따라 자동 리플로우
+- 모바일에서 자연스러운 1-2열 전환 (auto-fit minmax 사용)
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|

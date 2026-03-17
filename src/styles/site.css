@@ -169,7 +169,7 @@
 /* ─── Home: Curriculum Grid ─── */
 .home-curriculum-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
 }
 
@@ -214,7 +214,7 @@
 /* ─── Home: Command Grid ─── */
 .home-commands-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 24px;
 }
 
@@ -1599,9 +1599,9 @@
 
 /* ─── Lesson Page Container ─── */
 .lesson-page {
-  max-width: 900px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 20px 60px;
+  padding: 0 40px 60px;
 }
 
 /* ─── Hero Compact (Page Header) ─── */
@@ -1677,6 +1677,11 @@
 }
 
 /* ─── Tables in Content ─── */
+.content-card .table-wrapper {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
 .content-card table {
   width: 100%;
   border-collapse: collapse;
@@ -1837,7 +1842,7 @@
 /* ─── Content Page Responsive ─── */
 @media (max-width: 768px) {
   .lesson-page {
-    padding: 0 16px 40px;
+    padding: 0 20px 40px;
   }
 
   .hero-compact {

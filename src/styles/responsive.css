@@ -1347,28 +1347,8 @@
    Home Page Responsive
    ============================================ */
 
-@media (max-width: 1100px) {
-    .home-curriculum-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .home-commands-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 @media (max-width: 768px) {
     .home-goals-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .home-curriculum-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .home-commands-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
     }
@@ -1376,14 +1356,6 @@
 
 @media (max-width: 480px) {
     .home-goals-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .home-curriculum-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .home-commands-grid {
         grid-template-columns: 1fr;
     }
 }
