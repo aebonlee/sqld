@@ -290,6 +290,45 @@ sqld-repo/
 - `npx gh-pages -d dist` — gh-pages 브랜치 배포
 - GitHub Pages 설정 확인: source=gh-pages, status=built
 
+### 2026-03-18 (Day 1 - 2차) - 콘텐츠 페이지 CSS 수정 및 버그 수정
+
+#### 문제 발견
+- 사이트 배포 후 상단 메뉴(Navbar)와 푸터(Footer)는 정상 표시되나, **콘텐츠 페이지 내용이 전혀 보이지 않는 문제** 발생
+- 원인 조사 결과 2가지 문제 확인
+
+#### 원인 1: CSS 클래스 누락
+- linux-study에서 복사한 CSS에는 `lesson-body` 등의 클래스만 정의되어 있었음
+- SQLD 콘텐츠 페이지에서 사용하는 클래스들(`lesson-page`, `hero-compact`, `content-card`, `chapter-grid`, `chapter-card`, `info-box`)에 대한 CSS 정의가 없었음
+- **해결**: `src/styles/site.css`에 콘텐츠 페이지용 CSS 303줄 추가
+
+#### 추가된 CSS 스타일 상세
+| 클래스명 | 용도 |
+|---------|------|
+| `.lesson-page` | 콘텐츠 페이지 컨테이너 (max-width: 900px) |
+| `.hero-compact` | 페이지 상단 제목 영역 |
+| `.content-card` | 본문 카드 (glassmorphism 배경, 둥근 모서리) |
+| `.content-card h2/h3/p/ul/ol` | 본문 타이포그래피 |
+| `.content-card table/th/td` | 본문 내 테이블 스타일 |
+| `.content-card pre/code` | 코드 블록 (다크 배경, Consolas 폰트) |
+| `.info-box` | 정보/팁 박스 (좌측 파란 보더) |
+| `.chapter-grid` | 챕터 네비게이션 그리드 (auto-fit) |
+| `.chapter-card` | 챕터 카드 (hover 효과, 트랜지션) |
+| 다크 모드 | `[data-theme="dark"]` 오버라이드 |
+| 반응형 | 768px, 480px 브레이크포인트 |
+
+#### 원인 2: ExamRound 함수명 불일치
+- `ExamRound1.jsx`, `ExamRound2.jsx`에서 `saveExamResult()` 호출
+- `ProgressContext.jsx`에서 내보내는 실제 함수명은 `recordExamResult()`
+- 함수 시그니처도 불일치: `saveExamResult(id, {score, total, pass})` → `recordExamResult(id, score, total)`
+- **해결**: 두 파일 모두 `recordExamResult(examId, score, 100)`으로 수정
+
+#### 커밋 & 배포
+- 커밋: `a1d5a31` — `fix: 콘텐츠 페이지 CSS 추가 및 ExamRound 버그 수정`
+- 빌드: Vite 7.3.1 (5.20s 소요)
+- 배포: `npx gh-pages -d dist` → Published
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|
@@ -308,7 +347,7 @@ sqld-repo/
 ## 향후 계획
 
 - [ ] 3회, 4회 모의고사 문항 추가 (각 20문항)
-- [ ] Cloudflare DNS 설정 (`sqld` CNAME → `aebonlee.github.io`)
+- [x] ~~Cloudflare DNS 설정~~ → GitHub Pages 자체 DNS 사용 (별도 설정 불필요)
 - [ ] Supabase 테이블 생성 (progress, page_views)
 - [ ] Google/Kakao OAuth 콜백 URL 설정
 - [ ] 모바일 UI 세부 테스트 및 조정
