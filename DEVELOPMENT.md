@@ -671,6 +671,19 @@ sqld-repo/
 | 상품/주문/고객 | 고객(5), 상품(6), 주문(8) | 19행 | 3-table JOIN, GROUP BY, 서브쿼리 |
 | 학생/수강/과목 | 학생(6), 과목(5), 수강(10) | 21행 | N:M 관계, HAVING, 집계함수 |
 
+### 2026-03-18 (Day 1 - 11차) - Playground UI 개선: 예제 SQL 버튼 위치 이동
+
+#### 변경 내용
+- `예제 SQL ▾` 드롭다운 버튼을 하단 툴바에서 **데이터셋 설명 오른쪽 상단**으로 이동
+- 사용자가 데이터셋 선택 직후 바로 예제를 확인할 수 있도록 접근성 개선
+
+#### 수정 파일 (2개)
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `src/components/SqlPlayground.jsx` | 예제 SQL 버튼을 toolbar → desc-row로 이동 |
+| 2 | `src/styles/playground.css` | `.playground-desc-row` flex 레이아웃 추가 |
+
 ---
 
 ## 향후 계획
