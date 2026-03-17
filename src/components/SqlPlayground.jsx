@@ -146,8 +146,24 @@ export default function SqlPlayground({ datasets }) {
         ))}
       </div>
 
-      {/* Dataset Description */}
-      <p className="playground-desc">{dataset.description}</p>
+      {/* Dataset Description + Examples */}
+      <div className="playground-desc-row">
+        <p className="playground-desc">{dataset.description}</p>
+        <div className="playground-examples-wrap">
+          <button className="playground-btn playground-btn-examples" onClick={() => setShowExamples(!showExamples)}>
+            예제 SQL ▾
+          </button>
+          {showExamples && (
+            <div className="playground-examples-dropdown">
+              {dataset.examples.map((ex, i) => (
+                <button key={i} onClick={() => loadExample(ex.sql)}>
+                  {ex.title}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Schema Toggle */}
       <div className="playground-schema-section">
@@ -217,22 +233,6 @@ export default function SqlPlayground({ datasets }) {
           <button className="playground-btn playground-btn-reset" onClick={handleReset}>
             초기화
           </button>
-        </div>
-        <div className="playground-toolbar-right">
-          <div className="playground-examples-wrap">
-            <button className="playground-btn playground-btn-examples" onClick={() => setShowExamples(!showExamples)}>
-              예제 SQL ▾
-            </button>
-            {showExamples && (
-              <div className="playground-examples-dropdown">
-                {dataset.examples.map((ex, i) => (
-                  <button key={i} onClick={() => loadExample(ex.sql)}>
-                    {ex.title}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 

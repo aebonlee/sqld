@@ -37,10 +37,18 @@
   border-bottom-color: var(--primary-blue);
 }
 
+.playground-desc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 .playground-desc {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-bottom: 16px;
+  margin: 0;
   line-height: 1.5;
 }
 
