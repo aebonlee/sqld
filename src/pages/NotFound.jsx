@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useAOS } from '../hooks/useAOS';
 import SEOHead from '../components/SEOHead';
 
 const NotFound = () => {
-  useAOS();
-
   return (
     <>
       <SEOHead

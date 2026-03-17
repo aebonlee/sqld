@@ -354,6 +354,33 @@ sqld-repo/
 - 모의고사 타이머/채점/오답확인 로직 정상 확인
 - ErrorBoundary 및 Lazy Loading 에러 복구 정상 확인
 
+### 2026-03-18 (Day 1 - 4차) - 네비바 겹침 수정 및 AOS 애니메이션 버그 수정
+
+#### 문제 1: 콘텐츠 페이지가 전혀 보이지 않음 (opacity: 0)
+- **원인**: `animations.css`에서 `[data-aos]` 요소가 기본 `opacity: 0`으로 숨겨져 있는데, `useAOS()` 훅이 `Home.jsx`에서만 호출되어 다른 페이지에서는 `aos-animate` 클래스가 추가되지 않아 콘텐츠가 투명 상태로 유지됨
+- **해결**: `useAOS()`를 `PublicLayout.jsx`로 이동하여 모든 페이지에서 AOS 애니메이션이 작동하도록 함
+- **수정 파일**: `PublicLayout.jsx` (useAOS 추가), `Home.jsx` (중복 useAOS 제거)
+
+#### 문제 2: 타이틀 영역이 네비바와 겹침
+- **원인**: Navbar가 `position: fixed`로 80px 높이인데, `.hero-compact`의 `padding-top`이 60px으로 네비바 뒤에 가려짐
+- **해결**: `.hero-compact` padding-top을 `calc(var(--nav-height) + 40px)` = 120px으로 변경
+- **수정 파일**: `src/styles/site.css` (데스크톱 + 768px 반응형 모두)
+
+#### 문제 3: 404 페이지 네비바 겹침 + 중복 useAOS
+- **원인**: `.not-found-page`에 nav-height 고려 없이 `padding: 40px`만 사용, NotFound.jsx에서 useAOS 중복 호출
+- **해결**: padding-top에 `calc(var(--nav-height) + 40px)` 적용, NotFound.jsx에서 useAOS import 제거
+- **수정 파일**: `src/styles/base.css`, `src/pages/NotFound.jsx`
+
+#### 전체 사이트 점검 결과
+- 25개 페이지 nav-height 처리 정상 확인:
+  - `.hero-section` (Home): `calc(var(--nav-height) + 60px)` ✓
+  - `.hero-compact` (콘텐츠 15개 + 모의고사 4개): `calc(var(--nav-height) + 40px)` ✓
+  - `.page-header` (Login, Profile): `calc(var(--nav-height) + 48px)` ✓
+  - `.not-found-page` (404): `calc(var(--nav-height) + 40px)` ✓
+- 모든 LessonComplete ID와 studyItems.js 일치 확인 ✓
+- 모든 Link 경로와 App.jsx 라우트 일치 확인 ✓
+- dist/404.html SPA 폴백 파일 정상 생성 확인 ✓
+
 ---
 
 #### 총 개발 결과
