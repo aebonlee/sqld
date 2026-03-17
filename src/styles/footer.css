@@ -1,0 +1,206 @@
+/* ============================================
+   Sticky Footer Layout
+   ============================================ */
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-main {
+    flex: 1;
+}
+
+/* ============================================
+   Footer — Gradient Dark
+   ============================================ */
+
+.footer {
+    background: linear-gradient(180deg, #111827 0%, #0A0F1A 100%);
+    color: var(--text-white);
+    padding: 60px 0 32px;
+    margin-top: 80px;
+}
+
+/* ─── Grid: 3 columns ─── */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    gap: 48px;
+    margin-bottom: 40px;
+}
+
+/* ─── Brand / Logo ─── */
+.footer-logo {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #fff;
+}
+
+.footer-logo-highlight {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-brand p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* ─── Family Site ─── */
+.footer-family {
+    margin-top: 16px;
+}
+
+.footer-family select {
+    width: 100%;
+    max-width: 220px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    appearance: auto;
+}
+
+.footer-family select:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-family select option {
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+/* ─── Section Heading ─── */
+.footer-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+/* ─── Nav Links (2-column) ─── */
+.footer-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+}
+
+.footer-nav-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    line-height: 1.6;
+}
+
+.footer-nav-links a:hover {
+    color: #93C5FD;
+}
+
+/* ─── Quick Links (legacy) ─── */
+.footer-quick-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-quick-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    line-height: 1.6;
+}
+
+.footer-quick-links a:hover {
+    color: #93C5FD;
+}
+
+/* ─── Contact ─── */
+.footer-contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+a.footer-contact-row:hover {
+    color: #93C5FD;
+}
+
+.footer-contact-row svg {
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+/* ─── Bottom Bar ─── */
+.footer-bottom {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+}
+
+.footer-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1.8;
+}
+
+.footer-divider {
+    margin: 0 8px;
+    opacity: 0.4;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 0 24px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-meta {
+        line-height: 2;
+    }
+
+    .footer-divider {
+        display: none;
+    }
+
+    .footer-meta span:not(.footer-divider)::before {
+        content: '\A';
+        white-space: pre;
+    }
+}
