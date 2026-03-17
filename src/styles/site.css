@@ -1607,7 +1607,7 @@
 /* ─── Hero Compact (Page Header) ─── */
 .hero-compact {
   text-align: center;
-  padding: 60px 0 40px;
+  padding: calc(var(--nav-height) + 40px) 0 40px;
 }
 
 .hero-compact h1 {
@@ -1841,7 +1841,7 @@
   }
 
   .hero-compact {
-    padding: 40px 0 24px;
+    padding: calc(var(--nav-height) + 24px) 0 24px;
   }
 
   .hero-compact h1 {
