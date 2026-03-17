@@ -54,7 +54,8 @@
 }
 
 /* ─── SQL Code Area ─── */
-.sql-block-code {
+.sql-block-code,
+.content-card .sql-block .sql-block-code {
   background: #1a202c;
   color: #e2e8f0;
   margin: 0;
@@ -62,9 +63,12 @@
   overflow-x: auto;
   line-height: 1.6;
   border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
-.sql-block-code code {
+.sql-block-code code,
+.content-card .sql-block .sql-block-code code {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   color: #e2e8f0;
   white-space: pre;
@@ -217,11 +221,27 @@
   overflow-x: auto;
 }
 
+/* ─── Override content-card leaking styles ─── */
+.content-card .sql-block .sql-block-table th {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.content-card .sql-block .sql-block-table td {
+  border-color: #e2e8f0;
+}
+
 /* ============================================
    Dark Mode
    ============================================ */
 [data-theme="dark"] .sql-block {
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .content-card .sql-block .sql-block-code code,
+[data-theme="dark"] .sql-block .sql-block-code code {
+  background: none;
+  color: #e2e8f0;
 }
 
 [data-theme="dark"] .sql-block-desc {
@@ -236,13 +256,15 @@
   color: #90cdf4;
 }
 
-[data-theme="dark"] .sql-block-table th {
+[data-theme="dark"] .sql-block-table th,
+[data-theme="dark"] .content-card .sql-block .sql-block-table th {
   background: rgba(255, 255, 255, 0.06);
   color: #e2e8f0;
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="dark"] .sql-block-table td {
+[data-theme="dark"] .sql-block-table td,
+[data-theme="dark"] .content-card .sql-block .sql-block-table td {
   border-color: rgba(255, 255, 255, 0.06);
   color: #cbd5e0;
 }

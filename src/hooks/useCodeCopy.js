@@ -4,6 +4,7 @@ export function useCodeCopy() {
   useEffect(() => {
     function addButtons(container) {
       container.querySelectorAll('pre code').forEach(block => {
+        if (block.parentElement.closest('.sql-block')) return;
         if (block.parentElement.querySelector('.copy-btn')) return;
         const btn = document.createElement('button');
         btn.className = 'copy-btn';
