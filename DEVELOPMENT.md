@@ -403,6 +403,50 @@ sqld-repo/
 
 ---
 
+### 2026-03-18 (Day 1 - 6차) - 이모지 → Font Awesome 아이콘 전환
+
+#### 배경
+- 사이트 전체에서 이모지(📋🗃️🔗💻⚙️🔧🏗️📝🔢🔍📖💾👣🧭🏔️👑)를 사용하고 있었음
+- 크로스 플랫폼 일관성과 스타일 통일을 위해 Font Awesome 6.5.1로 전환
+
+#### 수정 내용
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `index.html` | Font Awesome 6.5.1 CDN 링크 추가 |
+| 2 | `src/config/badges.js` | 8개 뱃지 이모지 → FA 클래스명으로 변경 |
+| 3 | `src/components/BadgeCard.jsx` | `{badge.icon}` → `<i className={badge.icon}>` 렌더링 변경 |
+| 4 | `src/pages/Home.jsx` | 12개 커리큘럼/레퍼런스 카드 아이콘 FA로 교체 + `<i>` 태그 렌더링 |
+| 5 | `src/pages/ExamRound3.jsx` | `📝` → `fa-solid fa-pen-to-square` |
+| 6 | `src/pages/ExamRound4.jsx` | `📝` → `fa-solid fa-pen-to-square` |
+
+#### 아이콘 매핑 상세
+
+| 용도 | 이전 (이모지) | 이후 (FA 아이콘) |
+|------|-------------|-----------------|
+| 뱃지: 입문 마스터 | 📋 | `fa-solid fa-clipboard-list` |
+| 뱃지: 1과목 마스터 | 🗃️ | `fa-solid fa-database` |
+| 뱃지: 2과목 마스터 | 💾 | `fa-solid fa-server` |
+| 뱃지: SQL 레퍼런스 마스터 | 📖 | `fa-solid fa-book-open` |
+| 뱃지: 첫 걸음 | 👣 | `fa-solid fa-shoe-prints` |
+| 뱃지: 탐험가 | 🧭 | `fa-solid fa-compass` |
+| 뱃지: 도전자 | 🏔️ | `fa-solid fa-mountain` |
+| 뱃지: 그랜드 마스터 | 👑 | `fa-solid fa-crown` |
+| 홈: 과목 개요 | 📋 | `fa-solid fa-clipboard-list` |
+| 홈: 데이터 모델링 | 🗃️ | `fa-solid fa-cubes` |
+| 홈: 데이터 모델과 SQL | 🔗 | `fa-solid fa-link` |
+| 홈: SQL 기본 | 💻 | `fa-solid fa-laptop-code` |
+| 홈: SQL 활용 | ⚙️ | `fa-solid fa-gears` |
+| 홈: 관리 구문 | 🔧 | `fa-solid fa-wrench` |
+| 홈: DDL | 🏗️ | `fa-solid fa-hammer` |
+| 홈: DML | 📝 | `fa-solid fa-pen-to-square` |
+| 홈: 함수 | 🔢 | `fa-solid fa-calculator` |
+| 홈: JOIN | 🔗 | `fa-solid fa-link` |
+| 홈: 서브쿼리 | 🔍 | `fa-solid fa-magnifying-glass` |
+| 모의고사 준비 중 | 📝 | `fa-solid fa-pen-to-square` |
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|
