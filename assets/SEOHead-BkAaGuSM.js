@@ -1,0 +1,1 @@
+import{r as o}from"./index-XypBnk7s.js";const m=({title:e,description:t})=>(o.useEffect(()=>{if(e&&(document.title=e),t){let r=document.querySelector('meta[name="description"]');r&&r.setAttribute("content",t)}},[e,t]),null);export{m as S};
