@@ -536,6 +536,37 @@ sqld-repo/
 
 ---
 
+### 2026-03-18 (Day 1 - 9차) - 프로필 페이지 간격 수정 및 모의고사 UI 리디자인
+
+#### 문제 1: 프로필 페이지 상단 간격 부족
+- **증상**: `.page-header` (파란 그라데이션 타이틀 영역) 바로 아래에 `.profile-header` (아바타, 이름, 통계, 로그아웃 버튼)가 간격 없이 붙어 있음
+- **원인**: `.profile-page > .container`에 `padding-top`이 없어서 페이지 헤더와 프로필 카드 사이 여백이 0
+- **해결**: `profile.css`에 `.profile-page > .container { padding-top: 40px; }` 추가
+
+#### 문제 2: 모의고사 1회/2회 디자인 단조로움
+- **증상**: ExamRound1/2가 대부분 인라인 스타일로 작성되어 있어, 사이트 전체의 고급스러운 `.exam-*` CSS 클래스를 활용하지 못하고 있었음
+- **해결**: 4개 화면 모두 기존 `.exam-*` CSS 클래스를 활용하여 전면 리디자인
+
+#### ExamRound1/2 리디자인 상세
+
+| 화면 | 이전 | 이후 |
+|------|------|------|
+| 시작 화면 | `<p>시험시간: 90분</p>` + `btn-primary` 버튼 | `.exam-info-grid` 4칸 카드 (시간/문항/합격기준/만점, FA 아이콘) + `.exam-notice` 안내 박스 + `.exam-start-btn` |
+| 문제 풀이 | 인라인 스타일 번호 버튼 + 인라인 선택지 | `.exam-header-bar` 상단 타이머 바 + `.exam-nav-section` 번호 네비게이션 + `.exam-progress-track` 진행률 바 + `.exam-question-area` 질문 카드 + `.exam-q-num` 번호 배지 + `.exam-option` 원형 번호 선택지 + `.exam-ctrl-btn` 컨트롤 버튼 |
+| 제출 확인 | 없음 (바로 제출) | `.exam-modal-overlay` + `.exam-modal` 확인 대화상자 (응답/미응답 통계, 경고 메시지) |
+| 결과 화면 | 인라인 `fontSize: 48px` 점수 + 텍스트 | `.exam-score-circle` (140px 원형 스코어) + `.exam-grade` 합격/불합격 배지 + `.exam-result-actions` 버튼 |
+| 오답 확인 | 인라인 `background/border` 박스 | `.exam-detail-list` 아코디언 + `.exam-detail-item` + `.exam-detail--ok/.exam-detail--wrong` 컬러 코딩 + `.exam-explanation` 해설 박스 |
+
+#### 수정 파일 (3개)
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `src/styles/profile.css` | `.profile-page > .container` padding-top: 40px 추가 |
+| 2 | `src/pages/ExamRound1.jsx` | 전면 리디자인 — 인라인 스타일 제거, `.exam-*` CSS 클래스 적용, 제출 확인 모달 추가 |
+| 3 | `src/pages/ExamRound2.jsx` | ExamRound1과 동일한 리디자인 적용 |
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|

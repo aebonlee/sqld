@@ -6,6 +6,10 @@
   padding-bottom: 60px;
 }
 
+.profile-page > .container {
+  padding-top: 40px;
+}
+
 /* Profile Header */
 .profile-header {
   display: flex;

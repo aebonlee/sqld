@@ -75,6 +75,7 @@ export default function ExamRound2() {
   const [submitted, setSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(90 * 60);
   const [showReview, setShowReview] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!started || submitted) return;
@@ -93,107 +94,276 @@ export default function ExamRound2() {
 
   const handleSubmit = useCallback(() => {
     setSubmitted(true);
+    setShowModal(false);
     const score = QUESTIONS.reduce((acc, q, i) => answers[i] === q.ans ? acc + 5 : acc, 0);
     recordExamResult('exam-round2', score, 100);
   }, [answers, recordExamResult]);
 
   const score = QUESTIONS.reduce((acc, q, i) => answers[i] === q.ans ? acc + 5 : acc, 0);
+  const correctCount = QUESTIONS.filter((q, i) => answers[i] === q.ans).length;
+  const answeredCount = Object.keys(answers).length;
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const ss = String(timeLeft % 60).padStart(2, '0');
+  const isWarn = timeLeft < 300;
 
+  /* ── Start Screen ── */
   if (!started) {
     return (
       <div className="lesson-page">
-        <SEOHead title="2회 모의고사 - SQLD Study" />
-        <section className="hero-compact" data-aos="fade-up"><h1>2회 모의고사</h1><p className="hero-subtitle">20문항 · 100점 만점 · 60점 합격</p></section>
-        <article className="content-card" data-aos="fade-up" style={{ textAlign: 'center' }}>
-          <p>시험 시간: <strong>90분</strong> | 문항 수: <strong>20문항</strong> | 합격 기준: <strong>60점 이상</strong></p><br/>
-          <button className="btn-primary" onClick={() => setStarted(true)}>{t('exam.start')}</button>
+        <SEOHead title="2회 모의고사 - SQLD Study" description="SQLD 2회 모의고사" />
+        <section className="hero-compact" data-aos="fade-up">
+          <h1>2회 모의고사</h1>
+          <p className="hero-subtitle">SQLD 자격증 실전 대비 모의고사</p>
+        </section>
+        <article className="content-card" data-aos="fade-up">
+          <div className="exam-intro">
+            <div className="exam-info-grid">
+              <div className="exam-info-card">
+                <span className="exam-info-icon"><i className="fa-regular fa-clock"></i></span>
+                <strong>90분</strong>
+                <span>시험 시간</span>
+              </div>
+              <div className="exam-info-card">
+                <span className="exam-info-icon"><i className="fa-regular fa-file-lines"></i></span>
+                <strong>20문항</strong>
+                <span>객관식</span>
+              </div>
+              <div className="exam-info-card">
+                <span className="exam-info-icon"><i className="fa-solid fa-bullseye"></i></span>
+                <strong>60점</strong>
+                <span>합격 기준</span>
+              </div>
+              <div className="exam-info-card">
+                <span className="exam-info-icon"><i className="fa-solid fa-star"></i></span>
+                <strong>100점</strong>
+                <span>만점</span>
+              </div>
+            </div>
+            <div className="exam-notice">
+              <h3><i className="fa-solid fa-circle-info"></i> 시험 안내</h3>
+              <ul>
+                <li>각 문항당 5점이며, 총 20문항입니다.</li>
+                <li>시간 종료 시 자동으로 제출됩니다.</li>
+                <li>문항 간 자유롭게 이동할 수 있습니다.</li>
+                <li>60점 이상 득점 시 합격입니다.</li>
+              </ul>
+            </div>
+            <button className="exam-start-btn" onClick={() => setStarted(true)}>
+              <i className="fa-solid fa-play"></i>&nbsp; {t('exam.start')}
+            </button>
+          </div>
         </article>
       </div>
     );
   }
 
+  /* ── Submit Confirm Modal ── */
+  const modal = showModal && (
+    <div className="exam-modal-overlay" onClick={() => setShowModal(false)}>
+      <div className="exam-modal" onClick={e => e.stopPropagation()}>
+        <h3><i className="fa-solid fa-paper-plane"></i> 시험 제출</h3>
+        <div className="exam-modal-stats">
+          <p>응답한 문항: <strong>{answeredCount} / {QUESTIONS.length}</strong></p>
+          <p>미응답 문항: <strong>{QUESTIONS.length - answeredCount}</strong></p>
+        </div>
+        {answeredCount < QUESTIONS.length && (
+          <p className="exam-modal-warn">
+            <i className="fa-solid fa-triangle-exclamation"></i> 아직 응답하지 않은 문항이 있습니다.
+          </p>
+        )}
+        <div className="exam-modal-actions">
+          <button className="exam-ctrl-btn" onClick={() => setShowModal(false)}>돌아가기</button>
+          <button className="exam-ctrl-btn exam-ctrl-btn--submit" onClick={handleSubmit}>제출하기</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  /* ── Result Screen ── */
   if (submitted && !showReview) {
+    const passed = score >= 60;
     return (
       <div className="lesson-page">
-        <SEOHead title="2회 모의고사 결과" />
-        <section className="hero-compact"><h1>{t('exam.result')}</h1></section>
-        <article className="content-card" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: '48px', color: score >= 60 ? '#22c55e' : '#ef4444' }}>{score}점</h2>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', color: score >= 60 ? '#22c55e' : '#ef4444' }}>{score >= 60 ? t('exam.pass') : t('exam.fail')}</p>
-          <p>정답: {QUESTIONS.filter((q, i) => answers[i] === q.ans).length} / {QUESTIONS.length}</p><br/>
-          <button className="btn-primary" onClick={() => setShowReview(true)}>{t('exam.review')}</button>
+        <SEOHead title="2회 모의고사 결과 - SQLD Study" />
+        <section className="hero-compact">
+          <h1>{t('exam.result')}</h1>
+          <p className="hero-subtitle">2회 모의고사</p>
+        </section>
+        <article className="content-card">
+          <div className="exam-result-summary">
+            <div className="exam-score-circle" style={{ borderColor: passed ? '#22c55e' : '#ef4444' }}>
+              <span className="exam-score-num" style={{ color: passed ? '#22c55e' : '#ef4444' }}>{score}</span>
+              <span className="exam-score-label">/ 100점</span>
+            </div>
+            <div className="exam-score-info">
+              <span className="exam-grade" style={{ background: passed ? '#22c55e' : '#ef4444' }}>
+                {passed ? t('exam.pass') : t('exam.fail')}
+              </span>
+              <p style={{ margin: '4px 0', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                정답 {correctCount} / {QUESTIONS.length} 문항
+              </p>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-light)' }}>
+                문항당 5점 배점
+              </p>
+            </div>
+          </div>
+          <div className="exam-result-actions">
+            <button className="exam-ctrl-btn exam-ctrl-btn--next" onClick={() => setShowReview(true)}>
+              <i className="fa-solid fa-magnifying-glass"></i>&nbsp; {t('exam.review')}
+            </button>
+          </div>
         </article>
       </div>
     );
   }
 
+  /* ── Review Screen ── */
   if (submitted && showReview) {
     return (
       <div className="lesson-page">
-        <SEOHead title="2회 모의고사 오답 확인" />
-        <section className="hero-compact"><h1>{t('exam.review')}</h1></section>
+        <SEOHead title="2회 모의고사 오답 확인 - SQLD Study" />
+        <section className="hero-compact">
+          <h1>{t('exam.review')}</h1>
+          <p className="hero-subtitle">2회 모의고사 &middot; {score}점 &middot; 정답 {correctCount}/{QUESTIONS.length}</p>
+        </section>
         <article className="content-card">
-          {QUESTIONS.map((q, i) => {
-            const correct = answers[i] === q.ans;
-            return (
-              <div key={q.id} style={{ marginBottom: '24px', padding: '16px', borderRadius: '8px',
-                background: correct ? 'rgba(34,197,94,0.05)' : 'rgba(239,68,68,0.05)',
-                border: `1px solid ${correct ? '#22c55e33' : '#ef444433'}` }}>
-                <p><strong>Q{i+1}.</strong> {q.q}</p>
-                {q.opts.map((opt, j) => (
-                  <div key={j} style={{ padding: '6px 12px', margin: '4px 0', borderRadius: '6px',
-                    background: j === q.ans ? 'rgba(34,197,94,0.15)' : answers[i] === j && j !== q.ans ? 'rgba(239,68,68,0.15)' : 'transparent',
-                    fontWeight: j === q.ans ? 'bold' : 'normal' }}>
-                    {j+1}. {opt} {j === q.ans && ' ✓'} {answers[i] === j && j !== q.ans && ' ✗'}
+          <div className="exam-result-tabs">
+            <button className={`exam-tab-btn exam-tab-btn--active`}>전체 ({QUESTIONS.length})</button>
+          </div>
+          <div className="exam-detail-list">
+            {QUESTIONS.map((q, i) => {
+              const correct = answers[i] === q.ans;
+              return (
+                <details key={q.id} className={`exam-detail-item ${correct ? 'exam-detail--ok' : 'exam-detail--wrong'}`}>
+                  <summary>
+                    <span className="exam-detail-num">Q{i + 1}</span>
+                    <span className="exam-detail-q">{q.q.split('\n')[0]}</span>
+                    <span className="exam-detail-score">{correct ? '5점' : '0점'}</span>
+                  </summary>
+                  <div className="exam-detail-body">
+                    <p style={{ marginBottom: '12px', whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>
+                      <strong>Q{i + 1}.</strong> {q.q}
+                    </p>
+                    <div className="exam-options">
+                      {q.opts.map((opt, j) => {
+                        let cls = 'exam-option';
+                        if (j === q.ans) cls += ' exam-option--sel';
+                        return (
+                          <div key={j} className={cls} style={{
+                            cursor: 'default',
+                            background: j === q.ans ? 'rgba(34,197,94,0.08)' : (answers[i] === j && j !== q.ans ? 'rgba(239,68,68,0.08)' : 'transparent'),
+                            borderColor: j === q.ans ? '#22c55e' : (answers[i] === j && j !== q.ans ? '#ef4444' : 'var(--border-light)')
+                          }}>
+                            <span className="exam-option-num" style={{
+                              background: j === q.ans ? '#22c55e' : (answers[i] === j && j !== q.ans ? '#ef4444' : 'var(--bg-light-gray)'),
+                              color: (j === q.ans || (answers[i] === j && j !== q.ans)) ? '#fff' : 'var(--primary-blue)'
+                            }}>{j + 1}</span>
+                            <span>{opt}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="exam-explanation">
+                      <i className="fa-solid fa-lightbulb"></i>&nbsp; {q.exp}
+                    </div>
                   </div>
-                ))}
-                <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>{q.exp}</p>
-              </div>
-            );
-          })}
+                </details>
+              );
+            })}
+          </div>
+          <div className="exam-result-actions">
+            <button className="exam-ctrl-btn" onClick={() => setShowReview(false)}>
+              <i className="fa-solid fa-arrow-left"></i>&nbsp; 결과로 돌아가기
+            </button>
+          </div>
         </article>
       </div>
     );
   }
 
+  /* ── Question Screen ── */
   const q = QUESTIONS[current];
   return (
     <div className="lesson-page">
-      <SEOHead title={`2회 모의고사 - 문제 ${current+1}`} />
-      <section className="hero-compact"><h1>2회 모의고사</h1><p className="hero-subtitle">{t('exam.time_remaining')}: {mm}:{ss}</p></section>
-      <article className="content-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <span>{t('exam.question')} {current+1} {t('exam.of')} {QUESTIONS.length}</span>
-          <span>{Object.keys(answers).length} / {QUESTIONS.length} 응답</span>
+      <SEOHead title={`2회 모의고사 - 문제 ${current + 1}`} />
+      {modal}
+      <section className="hero-compact exam-header-bar">
+        <div className="exam-top-bar container">
+          <span className="exam-progress-text">
+            <i className="fa-regular fa-file-lines"></i>&nbsp; {current + 1} / {QUESTIONS.length}
+          </span>
+          <span className={`exam-timer${isWarn ? ' exam-timer--warn' : ''}`}>
+            <i className="fa-regular fa-clock"></i>&nbsp; {mm}:{ss}
+          </span>
+          <span className="exam-progress-text">
+            {answeredCount} / {QUESTIONS.length} 응답
+          </span>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '20px' }}>
-          {QUESTIONS.map((_, i) => (
-            <button key={i} onClick={() => setCurrent(i)} style={{ width: '32px', height: '32px', borderRadius: '6px', border: '1px solid var(--border-light)', cursor: 'pointer', fontSize: '12px',
-              background: i === current ? 'var(--primary-blue)' : answers[i] !== undefined ? 'rgba(var(--primary-rgb),0.15)' : 'transparent',
-              color: i === current ? '#fff' : 'var(--text-primary)' }}>{i+1}</button>
-          ))}
+      </section>
+
+      <div className="container" style={{ paddingTop: '24px' }}>
+        {/* Navigation Buttons */}
+        <div className="exam-nav-section" style={{ marginBottom: '20px' }}>
+          <h4>문항 번호</h4>
+          <div className="exam-nav-buttons">
+            {QUESTIONS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`exam-nav-btn${i === current ? ' exam-nav-btn--cur' : ''}${answers[i] !== undefined && i !== current ? ' exam-nav-btn--done' : ''}`}
+              >{i + 1}</button>
+            ))}
+          </div>
+          <div className="exam-progress-track" style={{ marginTop: '12px' }}>
+            <div className="exam-progress-fill" style={{ width: `${(answeredCount / QUESTIONS.length) * 100}%` }} />
+          </div>
         </div>
-        <h3 style={{ whiteSpace: 'pre-wrap' }}>Q{current+1}. {q.q}</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '20px 0' }}>
-          {q.opts.map((opt, j) => (
-            <button key={j} onClick={() => setAnswers(prev => ({ ...prev, [current]: j }))}
-              style={{ textAlign: 'left', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer',
-                border: `2px solid ${answers[current] === j ? 'var(--primary-blue)' : 'var(--border-light)'}`,
-                background: answers[current] === j ? 'rgba(var(--primary-rgb),0.08)' : 'transparent',
-                color: 'var(--text-primary)', fontSize: '15px' }}>
-              {j+1}. {opt}
+
+        {/* Question Area */}
+        <div className="exam-question-area">
+          <div className="exam-q-header">
+            <span className="exam-q-num">Q{current + 1}</span>
+            <span className="exam-q-meta">5점 배점</span>
+          </div>
+          <p className="exam-q-text" style={{ whiteSpace: 'pre-wrap' }}>{q.q}</p>
+          <div className="exam-options">
+            {q.opts.map((opt, j) => (
+              <label
+                key={j}
+                className={`exam-option${answers[current] === j ? ' exam-option--sel' : ''}`}
+                onClick={() => setAnswers(prev => ({ ...prev, [current]: j }))}
+              >
+                <span className="exam-option-num">{j + 1}</span>
+                <span>{opt}</span>
+              </label>
+            ))}
+          </div>
+          <div className="exam-controls">
+            <button
+              className="exam-ctrl-btn"
+              disabled={current === 0}
+              onClick={() => setCurrent(current - 1)}
+            >
+              <i className="fa-solid fa-chevron-left"></i>&nbsp; {t('lesson.prev')}
             </button>
-          ))}
+            {current < QUESTIONS.length - 1 ? (
+              <button
+                className="exam-ctrl-btn exam-ctrl-btn--next"
+                onClick={() => setCurrent(current + 1)}
+              >
+                {t('lesson.next')} &nbsp;<i className="fa-solid fa-chevron-right"></i>
+              </button>
+            ) : (
+              <button
+                className="exam-ctrl-btn exam-ctrl-btn--submit"
+                onClick={() => setShowModal(true)}
+              >
+                <i className="fa-solid fa-paper-plane"></i>&nbsp; {t('exam.submit')}
+              </button>
+            )}
+          </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
-          <button disabled={current === 0} onClick={() => setCurrent(current-1)} className="btn-secondary">{t('lesson.prev')}</button>
-          {current < QUESTIONS.length - 1
-            ? <button onClick={() => setCurrent(current+1)} className="btn-primary">{t('lesson.next')}</button>
-            : <button onClick={handleSubmit} className="btn-primary" style={{ background: '#22c55e' }}>{t('exam.submit')}</button>}
-        </div>
-      </article>
+      </div>
     </div>
   );
 }
