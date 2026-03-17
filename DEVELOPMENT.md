@@ -509,6 +509,33 @@ sqld-repo/
 
 ---
 
+### 2026-03-18 (Day 1 - 8차) - SqlBlock 복사 버튼 중복 제거 및 다크모드 음영 수정
+
+#### 문제 1: SQL 코드 끝에 "복사" 텍스트 표시
+- **원인**: `useCodeCopy` 훅이 모든 `pre code` 요소에 복사 버튼을 추가하는데, SqlBlock 내부의 `pre.sql-block-code > code`에도 중복 추가됨
+- SqlBlock은 이미 자체 헤더에 복사 버튼이 있으므로, 훅이 추가한 버튼이 코드 영역 끝에 "복사" 텍스트로 노출
+- **해결**: `useCodeCopy.js`에 `.sql-block` 컨테이너 내부 요소 스킵 로직 추가
+  ```javascript
+  if (block.parentElement.closest('.sql-block')) return;
+  ```
+
+#### 문제 2: 다크모드에서 코드 영역 음영 표시
+- **원인**: `.content-card pre` 스타일(background: #1e293b, border-radius: 10px, margin: 1rem 0)이 `.sql-block-code`에도 적용되어 배경색 불일치 및 둥근 모서리 발생
+- `[data-theme="dark"] .content-card code`의 `background: rgba(255,255,255,0.1)`이 SqlBlock 내부 `code`에도 누수
+- **해결**: `sql-block.css`에 `.content-card .sql-block` 선택자로 명시적 오버라이드 추가
+  - `.content-card .sql-block .sql-block-code`: margin/border-radius/box-shadow 리셋
+  - `[data-theme="dark"] .content-card .sql-block .sql-block-code code`: background: none 강제
+  - `[data-theme="dark"] .content-card .sql-block .sql-block-table th/td`: 다크모드 테이블 스타일 명시
+
+#### 수정 파일 (2개)
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `src/hooks/useCodeCopy.js` | `.sql-block` 내부 `pre code` 스킵 (1줄 추가) |
+| 2 | `src/styles/sql-block.css` | `.content-card .sql-block` 스타일 누수 차단 + 다크모드 오버라이드 보강 |
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|
