@@ -33,6 +33,7 @@ const ExamRound3 = lazyLoad(() => import('./pages/ExamRound3'));
 const ExamRound4 = lazyLoad(() => import('./pages/ExamRound4'));
 const References = lazyLoad(() => import('./pages/References'));
 const Training = lazyLoad(() => import('./pages/Training'));
+const Playground = lazyLoad(() => import('./pages/Playground'));
 const Login = lazyLoad(() => import('./pages/Login'));
 const Profile = lazyLoad(() => import('./pages/Profile'));
 const NotFound = lazyLoad(() => import('./pages/NotFound'));
@@ -94,6 +95,7 @@ export default function App() {
           {/* References & Training */}
           <Route path="references" element={<References />} />
           <Route path="training" element={<Training />} />
+          <Route path="playground" element={<Playground />} />
 
           {/* Auth & Profile */}
           <Route path="login" element={<Login />} />

@@ -55,5 +55,12 @@ export const MENUS = [
     ]
   },
   { title: '참고자료', path: '/references' },
-  { title: '실습', path: '/training' },
+  {
+    title: '실습',
+    path: '/training',
+    children: [
+      { title: 'SQL 실습', path: '/training' },
+      { title: 'SQL Playground', path: '/playground' },
+    ]
+  },
 ];

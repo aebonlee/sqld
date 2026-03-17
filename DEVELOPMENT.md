@@ -20,6 +20,7 @@ SQLD(SQL Developer) 자격증 학습 웹사이트로, 체계적인 학습 가이
 | 라우팅 | React Router DOM 7.13.0 |
 | 인증/DB | Supabase (Google, Kakao OAuth + 이메일) |
 | PDF 생성 | jsPDF + html2canvas |
+| SQL 실행 | sql.js (WebAssembly SQLite) |
 | XSS 방지 | DOMPurify |
 | 배포 | GitHub Pages (gh-pages) |
 
@@ -40,6 +41,7 @@ sqld-repo/
 │   │   ├── SEOHead.jsx          # 동적 SEO 메타태그
 │   │   ├── LessonComplete.jsx   # 학습 완료 버튼
 │   │   ├── SqlBlock.jsx         # SQL 코드 + 실행 결과 컴포넌트
+│   │   ├── SqlPlayground.jsx   # SQL Playground 핵심 컴포넌트
 │   │   ├── SampleDataPanel.jsx  # 접이식 샘플 데이터 패널
 │   │   ├── BadgeCard.jsx        # 배지 카드
 │   │   ├── Certificate.jsx      # 수료증 (PDF/PNG 다운로드)
@@ -52,6 +54,13 @@ sqld-repo/
 │   │   ├── LanguageContext.jsx  # 언어 관리 (ko/en)
 │   │   ├── AuthContext.jsx      # 인증 관리 (Supabase)
 │   │   └── ProgressContext.jsx  # 학습 진행 관리 (localStorage + Supabase)
+│   ├── testdata/
+│   │   ├── sampleDataset.js     # 부서/사원 SQLite 데이터셋
+│   │   └── index.js             # testdata 통합 export
+│   ├── test/
+│   │   ├── ecommerceDataset.js  # 상품/주문/고객 데이터셋
+│   │   ├── schoolDataset.js     # 학생/수강/과목 데이터셋
+│   │   └── index.js             # test 통합 export
 │   ├── data/
 │   │   └── sampleData.js        # 공통 샘플 데이터 (부서/사원)
 │   ├── config/
@@ -80,6 +89,7 @@ sqld-repo/
 │   │   ├── profile.css          # 프로필 페이지
 │   │   ├── progress.css         # 학습 현황
 │   │   ├── sql-block.css        # SQL 블록 + 샘플 데이터 패널
+│   │   ├── playground.css       # SQL Playground
 │   │   ├── dark-mode.css        # 다크 모드
 │   │   └── responsive.css       # 반응형
 │   └── pages/
@@ -107,7 +117,8 @@ sqld-repo/
 │       ├── ExamRound3.jsx       # 3회 모의고사 (준비 중)
 │       ├── ExamRound4.jsx       # 4회 모의고사 (준비 중)
 │       ├── References.jsx       # 참고자료
-│       └── Training.jsx         # SQL 실습
+│       ├── Training.jsx         # SQL 실습
+│       └── Playground.jsx       # SQL Playground
 ├── .env                         # Supabase 환경변수
 ├── .gitignore
 ├── index.html
@@ -186,6 +197,7 @@ sqld-repo/
 | /exam/round4 | ExamRound4 | 4회 모의고사 |
 | /references | References | 참고자료 |
 | /training | Training | SQL 실습 |
+| /playground | Playground | SQL Playground |
 | /login | Login | 로그인 |
 | /profile | Profile | 프로필 |
 
@@ -570,15 +582,94 @@ sqld-repo/
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|
-| 전체 파일 수 | 72개 |
-| 코드 라인 수 | 약 16,500줄 |
-| React 컴포넌트 | 9개 |
-| 페이지 | 25개 |
+| 전체 파일 수 | 82개 |
+| 코드 라인 수 | 약 18,000줄 |
+| React 컴포넌트 | 10개 |
+| 페이지 | 26개 |
 | Context | 4개 |
 | 커스텀 훅 | 4개 |
-| CSS 파일 | 13개 |
-| 설정/데이터 파일 | 4개 |
+| CSS 파일 | 14개 |
+| 설정/데이터 파일 | 9개 |
 | 모의고사 문항 | 40문항 (1-2회) |
+
+---
+
+### 2026-03-18 (Day 1 - 10차) - SQL Playground 기능 구현
+
+#### 배경
+- 기존 Training 페이지는 연습 문제와 정답을 보여주는 정적 방식
+- 사용자가 브라우저에서 **직접 SQL을 작성하고 즉시 실행 결과를 확인**할 수 있는 인터랙티브 Playground 기능 추가
+- sql.js(WASM)를 사용하여 **서버 없이 브라우저 내에서 SQLite 실행**
+
+#### 기술 구현
+- **sql.js**: WebAssembly 기반 SQLite 엔진 (브라우저 내 실행)
+- WASM 파일을 `public/sql-wasm.wasm`에 배치
+- `vite.config.js`에 `optimizeDeps: { exclude: ['sql.js'] }` 추가
+
+#### 새로 생성한 파일 (9개)
+
+| # | 파일 | 설명 |
+|---|------|------|
+| 1 | `src/testdata/sampleDataset.js` | 기본 데이터셋 — 부서(4행)/사원(8행) SQLite CREATE+INSERT |
+| 2 | `src/testdata/index.js` | testdata 통합 export |
+| 3 | `src/test/ecommerceDataset.js` | 변형 데이터셋 1 — 고객(5행)/상품(6행)/주문(8행) |
+| 4 | `src/test/schoolDataset.js` | 변형 데이터셋 2 — 학생(6행)/과목(5행)/수강(10행) N:M 관계 |
+| 5 | `src/test/index.js` | test 통합 export |
+| 6 | `src/components/SqlPlayground.jsx` | Playground 핵심 컴포넌트 (sql.js 초기화, SQL 실행, 결과 렌더링) |
+| 7 | `src/pages/Playground.jsx` | Playground 페이지 래퍼 (SEOHead + hero-compact) |
+| 8 | `src/styles/playground.css` | Playground 전체 CSS (다크모드 + 반응형 지원) |
+| 9 | `public/sql-wasm.wasm` | sql.js WASM 바이너리 파일 |
+
+#### 수정한 파일 (4개)
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `vite.config.js` | `optimizeDeps.exclude: ['sql.js']` 추가 |
+| 2 | `src/index.css` | `playground.css` import 추가 |
+| 3 | `src/App.jsx` | `Playground` lazyLoad + `/playground` 라우트 추가 |
+| 4 | `src/config/site.js` | '실습' 메뉴를 드롭다운으로 변경 (SQL 실습 + SQL Playground) |
+
+#### SqlPlayground 컴포넌트 구조
+```
+┌─────────────────────────────────────────────┐
+│ [데이터셋 선택 탭]  부서/사원 │ 상품/주문 │ 학생/수강 │
+├─────────────────────────────────────────────┤
+│ [접이식] 현재 데이터셋 테이블 보기          │
+├─────────────────────────────────────────────┤
+│ SQL 입력 에디터 (textarea, monospace)       │
+│ SELECT * FROM 사원 WHERE 연봉 > 5000;       │
+├─────────────────────────────────────────────┤
+│ [실행] [초기화] [예제 SQL ▾]                │
+├─────────────────────────────────────────────┤
+│ 실행 결과 (N건, 0.Xms)                     │
+│ ┌────────┬────────┬────────┐               │
+│ │ 사원명  │ 직급   │ 연봉   │               │
+│ ├────────┼────────┼────────┤               │
+│ │ 김사장  │ 사장   │ 9000   │               │
+│ └────────┴────────┴────────┘               │
+├─────────────────────────────────────────────┤
+│ [실행 히스토리] (최근 5개)                   │
+└─────────────────────────────────────────────┘
+```
+
+#### 주요 기능
+- **데이터셋 탭 전환**: 3개 데이터셋 (부서/사원, 상품/주문/고객, 학생/수강/과목)
+- **스키마 보기**: 접이식 패널로 현재 데이터셋의 테이블 데이터 확인
+- **SQL 실행**: sql.js로 브라우저 내 SQLite 실행 + 결과 테이블 렌더링
+- **에러 표시**: 잘못된 SQL 입력 시 에러 메시지 (빨간 테두리)
+- **실행 시간**: ms 단위 실행 시간 표시
+- **예제 SQL**: 데이터셋별 5-6개 예제 쿼리 드롭다운
+- **실행 히스토리**: 최근 5개 쿼리 기록 (클릭 시 재로드)
+- **Ctrl+Enter**: 키보드 단축키로 실행
+- **DB 초기화**: 데이터셋을 초기 상태로 복원
+
+#### 데이터셋 상세
+
+| 데이터셋 | 테이블 | 행 수 | 실습 포인트 |
+|---------|--------|------|------------|
+| 부서/사원 | 부서(4), 사원(8) | 12행 | JOIN, SELF JOIN, 계층형, NULL 처리 |
+| 상품/주문/고객 | 고객(5), 상품(6), 주문(8) | 19행 | 3-table JOIN, GROUP BY, 서브쿼리 |
+| 학생/수강/과목 | 학생(6), 과목(5), 수강(10) | 21행 | N:M 관계, HAVING, 집계함수 |
 
 ---
 
@@ -590,3 +681,5 @@ sqld-repo/
 - [ ] Google/Kakao OAuth 콜백 URL 설정
 - [ ] 모바일 UI 세부 테스트 및 조정
 - [ ] 추가 학습 콘텐츠 보강 (실전 기출 해설 등)
+- [x] ~~SQL Playground 기능 구현~~ → sql.js(WASM) 브라우저 내 SQLite 실행
+- [ ] Playground 추가 데이터셋 (HR, 병원 등)

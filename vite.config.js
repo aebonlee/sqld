@@ -18,6 +18,9 @@ export default defineConfig({
     assetsDir: 'assets',
     emptyOutDir: true
   },
+  optimizeDeps: {
+    exclude: ['sql.js']
+  },
   server: {
     host: true,
     port: 5177
