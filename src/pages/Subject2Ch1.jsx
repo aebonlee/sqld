@@ -1,5 +1,7 @@
 import SEOHead from '../components/SEOHead';
 import LessonComplete from '../components/LessonComplete';
+import SqlBlock from '../components/SqlBlock';
+import SampleDataPanel from '../components/SampleDataPanel';
 
 export default function Subject2Ch1() {
   return (
@@ -12,6 +14,8 @@ export default function Subject2Ch1() {
       </section>
 
       <article className="content-card" data-aos="fade-up">
+        <SampleDataPanel />
+
         <h2>1. SQL 개요</h2>
         <p>
           SQL(Structured Query Language)은 관계형 데이터베이스에서
@@ -34,13 +38,16 @@ export default function Subject2Ch1() {
         <h2>2. DDL (Data Definition Language)</h2>
 
         <h3>CREATE TABLE</h3>
-        <pre><code>{`CREATE TABLE 사원 (
+        <SqlBlock
+          title="CREATE TABLE"
+          sql={`CREATE TABLE 사원 (
   사원번호  NUMBER       PRIMARY KEY,
   사원명    VARCHAR2(20) NOT NULL,
   부서번호  NUMBER       REFERENCES 부서(부서번호),
   입사일    DATE         DEFAULT SYSDATE,
   연봉      NUMBER
-);`}</code></pre>
+);`}
+        />
 
         <h3>주요 제약조건</h3>
         <table>
@@ -58,7 +65,9 @@ export default function Subject2Ch1() {
         </table>
 
         <h3>ALTER TABLE</h3>
-        <pre><code>{`-- 컬럼 추가
+        <SqlBlock
+          title="ALTER TABLE"
+          sql={`-- 컬럼 추가
 ALTER TABLE 사원 ADD (이메일 VARCHAR2(50));
 
 -- 컬럼 수정
@@ -68,7 +77,8 @@ ALTER TABLE 사원 MODIFY (사원명 VARCHAR2(30));
 ALTER TABLE 사원 DROP COLUMN 이메일;
 
 -- 컬럼 이름 변경
-ALTER TABLE 사원 RENAME COLUMN 연봉 TO 급여;`}</code></pre>
+ALTER TABLE 사원 RENAME COLUMN 연봉 TO 급여;`}
+        />
 
         <h3>DROP vs TRUNCATE vs DELETE</h3>
         <table>
@@ -85,26 +95,44 @@ ALTER TABLE 사원 RENAME COLUMN 연봉 TO 급여;`}</code></pre>
         <h2>3. DML (Data Manipulation Language)</h2>
 
         <h3>SELECT</h3>
-        <pre><code>{`SELECT 사원명, 부서번호, 연봉
+        <SqlBlock
+          title="SELECT"
+          sql={`SELECT 사원명, 부서번호, 연봉
 FROM 사원
 WHERE 부서번호 = 10
-ORDER BY 연봉 DESC;`}</code></pre>
+ORDER BY 연봉 DESC;`}
+          columns={['사원명', '부서번호', '연봉']}
+          rows={[
+            { 사원명: '김사장', 부서번호: 10, 연봉: 9000 },
+            { 사원명: '이부장', 부서번호: 10, 연봉: 7000 },
+            { 사원명: '박과장', 부서번호: 10, 연봉: 5000 },
+          ]}
+        />
 
         <h3>INSERT</h3>
-        <pre><code>{`-- 전체 컬럼 입력
+        <SqlBlock
+          title="INSERT"
+          sql={`-- 전체 컬럼 입력
 INSERT INTO 사원 VALUES (1001, '홍길동', 10, SYSDATE, 5000);
 
 -- 특정 컬럼만 입력
-INSERT INTO 사원 (사원번호, 사원명) VALUES (1002, '김철수');`}</code></pre>
+INSERT INTO 사원 (사원번호, 사원명) VALUES (1002, '김철수');`}
+        />
 
         <h3>UPDATE</h3>
-        <pre><code>{`UPDATE 사원
+        <SqlBlock
+          title="UPDATE"
+          sql={`UPDATE 사원
 SET 연봉 = 6000, 부서번호 = 20
-WHERE 사원번호 = 1001;`}</code></pre>
+WHERE 사원번호 = 1001;`}
+        />
 
         <h3>DELETE</h3>
-        <pre><code>{`DELETE FROM 사원
-WHERE 부서번호 = 30;`}</code></pre>
+        <SqlBlock
+          title="DELETE"
+          sql={`DELETE FROM 사원
+WHERE 부서번호 = 30;`}
+        />
 
         <h2>4. WHERE 절</h2>
 
@@ -203,12 +231,16 @@ WHERE 부서번호 = 30;`}</code></pre>
         </table>
 
         <h3>GROUP BY + HAVING</h3>
-        <pre><code>{`SELECT 부서번호, COUNT(*) AS 인원수, AVG(연봉) AS 평균연봉
+        <SqlBlock
+          title="GROUP BY + HAVING"
+          sql={`SELECT 부서번호, COUNT(*) AS 인원수, AVG(연봉) AS 평균연봉
 FROM 사원
 WHERE 입사일 >= '2020-01-01'
 GROUP BY 부서번호
 HAVING COUNT(*) >= 5
-ORDER BY 평균연봉 DESC;`}</code></pre>
+ORDER BY 평균연봉 DESC;`}
+          description="입사일 조건을 만족하고 인원 5명 이상인 부서만 (현재 데이터에선 해당 없음)"
+        />
 
         <div className="info-box">
           <strong>WHERE vs HAVING:</strong><br/>
@@ -217,7 +249,9 @@ ORDER BY 평균연봉 DESC;`}</code></pre>
         </div>
 
         <h2>7. ORDER BY</h2>
-        <pre><code>{`SELECT 사원명, 부서번호, 연봉
+        <SqlBlock
+          title="ORDER BY"
+          sql={`SELECT 사원명, 부서번호, 연봉
 FROM 사원
 ORDER BY 부서번호 ASC, 연봉 DESC;
 
@@ -226,7 +260,19 @@ ORDER BY 2, 3 DESC;
 
 -- NULL 정렬: Oracle에서 NULL은 가장 큰 값으로 취급
 -- ASC: NULL이 마지막
--- DESC: NULL이 처음`}</code></pre>
+-- DESC: NULL이 처음`}
+          columns={['사원명', '부서번호', '연봉']}
+          rows={[
+            { 사원명: '김사장', 부서번호: 10, 연봉: 9000 },
+            { 사원명: '이부장', 부서번호: 10, 연봉: 7000 },
+            { 사원명: '박과장', 부서번호: 10, 연봉: 5000 },
+            { 사원명: '최대리', 부서번호: 20, 연봉: 3500 },
+            { 사원명: '정사원', 부서번호: 20, 연봉: 2800 },
+            { 사원명: '한대리', 부서번호: 30, 연봉: 3200 },
+            { 사원명: '오사원', 부서번호: 30, 연봉: 2500 },
+            { 사원명: '강인턴', 부서번호: null, 연봉: null },
+          ]}
+        />
 
         <h2>8. TCL (Transaction Control Language)</h2>
         <table>
@@ -240,7 +286,9 @@ ORDER BY 2, 3 DESC;
           </tbody>
         </table>
 
-        <pre><code>{`INSERT INTO 사원 VALUES (1003, '박영희', 10, SYSDATE, 4000);
+        <SqlBlock
+          title="TCL 예시"
+          sql={`INSERT INTO 사원 VALUES (1003, '박영희', 10, SYSDATE, 4000);
 SAVEPOINT SP1;
 
 UPDATE 사원 SET 연봉 = 5000 WHERE 사원번호 = 1003;
@@ -249,7 +297,8 @@ SAVEPOINT SP2;
 DELETE FROM 사원 WHERE 사원번호 = 1003;
 
 ROLLBACK TO SP1;  -- DELETE와 UPDATE 취소, INSERT만 유지
-COMMIT;           -- INSERT 영구 반영`}</code></pre>
+COMMIT;           -- INSERT 영구 반영`}
+        />
 
         <div className="info-box">
           <strong>DDL은 Auto COMMIT:</strong> CREATE, ALTER, DROP, TRUNCATE 실행 시

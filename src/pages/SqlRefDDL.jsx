@@ -1,5 +1,7 @@
 import SEOHead from '../components/SEOHead';
 import LessonComplete from '../components/LessonComplete';
+import SqlBlock from '../components/SqlBlock';
+import SampleDataPanel from '../components/SampleDataPanel';
 
 export default function SqlRefDDL() {
   return (
@@ -12,13 +14,18 @@ export default function SqlRefDDL() {
       </section>
 
       <article className="content-card" data-aos="fade-up">
+        <SampleDataPanel />
+
         <h2>CREATE TABLE</h2>
-        <pre><code>{`CREATE TABLE 테이블명 (
+        <SqlBlock
+          title="CREATE TABLE"
+          sql={`CREATE TABLE 테이블명 (
   컬럼1  데이터타입  [제약조건],
   컬럼2  데이터타입  [DEFAULT 값],
   ...
   [CONSTRAINT 제약조건명 제약조건종류 (컬럼)]
-);`}</code></pre>
+);`}
+        />
 
         <h3>데이터 타입</h3>
         <table>
@@ -36,17 +43,22 @@ export default function SqlRefDDL() {
         </table>
 
         <h3>제약조건</h3>
-        <pre><code>{`CREATE TABLE 사원 (
+        <SqlBlock
+          title="제약조건 예시"
+          sql={`CREATE TABLE 사원 (
   사원번호 NUMBER       CONSTRAINT pk_emp PRIMARY KEY,
   사원명   VARCHAR2(20) NOT NULL,
   이메일   VARCHAR2(50) UNIQUE,
   부서번호 NUMBER       REFERENCES 부서(부서번호),
   급여     NUMBER       CHECK (급여 > 0),
   입사일   DATE         DEFAULT SYSDATE
-);`}</code></pre>
+);`}
+        />
 
         <h2>ALTER TABLE</h2>
-        <pre><code>{`-- 컬럼 추가
+        <SqlBlock
+          title="ALTER TABLE"
+          sql={`-- 컬럼 추가
 ALTER TABLE 테이블 ADD (컬럼명 데이터타입 [제약조건]);
 
 -- 컬럼 수정 (Oracle)
@@ -66,21 +78,28 @@ ALTER TABLE 테이블 ADD CONSTRAINT 제약명 PRIMARY KEY (컬럼);
 ALTER TABLE 테이블 ADD CONSTRAINT 제약명 FOREIGN KEY (컬럼) REFERENCES 참조테이블(참조컬럼);
 
 -- 제약조건 삭제
-ALTER TABLE 테이블 DROP CONSTRAINT 제약명;`}</code></pre>
+ALTER TABLE 테이블 DROP CONSTRAINT 제약명;`}
+        />
 
         <h2>DROP TABLE</h2>
-        <pre><code>{`-- 테이블 삭제
+        <SqlBlock
+          title="DROP TABLE"
+          sql={`-- 테이블 삭제
 DROP TABLE 테이블명;
 
 -- CASCADE CONSTRAINTS: FK 제약조건도 함께 삭제 (Oracle)
 DROP TABLE 테이블명 CASCADE CONSTRAINTS;
 
 -- PURGE: 휴지통에 넣지 않고 완전 삭제 (Oracle)
-DROP TABLE 테이블명 PURGE;`}</code></pre>
+DROP TABLE 테이블명 PURGE;`}
+        />
 
         <h2>TRUNCATE TABLE</h2>
-        <pre><code>{`-- 테이블 데이터 전체 삭제 (구조 유지)
-TRUNCATE TABLE 테이블명;`}</code></pre>
+        <SqlBlock
+          title="TRUNCATE TABLE"
+          sql={`-- 테이블 데이터 전체 삭제 (구조 유지)
+TRUNCATE TABLE 테이블명;`}
+        />
 
         <h3>DROP vs TRUNCATE vs DELETE 비교</h3>
         <table>
@@ -99,20 +118,26 @@ TRUNCATE TABLE 테이블명;`}</code></pre>
         </table>
 
         <h2>RENAME</h2>
-        <pre><code>{`-- 테이블 이름 변경 (Oracle)
+        <SqlBlock
+          title="RENAME"
+          sql={`-- 테이블 이름 변경 (Oracle)
 RENAME 원래테이블명 TO 새테이블명;
 
 -- SQL Server
-EXEC sp_rename '원래테이블명', '새테이블명';`}</code></pre>
+EXEC sp_rename '원래테이블명', '새테이블명';`}
+        />
 
         <h2>CREATE AS SELECT (CTAS)</h2>
-        <pre><code>{`-- 기존 테이블 복사 (데이터 포함)
+        <SqlBlock
+          title="CTAS"
+          sql={`-- 기존 테이블 복사 (데이터 포함)
 CREATE TABLE 새테이블 AS
 SELECT * FROM 원본테이블;
 
 -- 구조만 복사 (데이터 제외)
 CREATE TABLE 새테이블 AS
-SELECT * FROM 원본테이블 WHERE 1=2;`}</code></pre>
+SELECT * FROM 원본테이블 WHERE 1=2;`}
+        />
 
         <div className="info-box">
           <strong>CTAS 주의:</strong> NOT NULL을 제외한 제약조건(PK, FK, UNIQUE, CHECK 등)은 복사되지 않습니다.

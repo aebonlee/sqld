@@ -1,5 +1,7 @@
 import SEOHead from '../components/SEOHead';
 import LessonComplete from '../components/LessonComplete';
+import SqlBlock from '../components/SqlBlock';
+import SampleDataPanel from '../components/SampleDataPanel';
 
 export default function Subject2Ch2() {
   return (
@@ -12,6 +14,8 @@ export default function Subject2Ch2() {
       </section>
 
       <article className="content-card" data-aos="fade-up">
+        <SampleDataPanel />
+
         <h2>1. JOIN</h2>
         <p>
           JOIN은 두 개 이상의 테이블을 <strong>연결</strong>하여 데이터를 조회하는 방법입니다.
@@ -33,7 +37,9 @@ export default function Subject2Ch2() {
         </table>
 
         <h3>표준 JOIN 문법 (ANSI)</h3>
-        <pre><code>{`-- INNER JOIN
+        <SqlBlock
+          title="ANSI JOIN"
+          sql={`-- INNER JOIN
 SELECT e.사원명, d.부서명
 FROM 사원 e INNER JOIN 부서 d
 ON e.부서번호 = d.부서번호;
@@ -46,10 +52,24 @@ ON e.부서번호 = d.부서번호;
 -- FULL OUTER JOIN
 SELECT e.사원명, d.부서명
 FROM 사원 e FULL OUTER JOIN 부서 d
-ON e.부서번호 = d.부서번호;`}</code></pre>
+ON e.부서번호 = d.부서번호;`}
+          columns={['사원명', '부서명']}
+          rows={[
+            { 사원명: '김사장', 부서명: '개발팀' },
+            { 사원명: '이부장', 부서명: '개발팀' },
+            { 사원명: '박과장', 부서명: '개발팀' },
+            { 사원명: '최대리', 부서명: '인사팀' },
+            { 사원명: '정사원', 부서명: '인사팀' },
+            { 사원명: '한대리', 부서명: '영업팀' },
+            { 사원명: '오사원', 부서명: '영업팀' },
+          ]}
+          description="INNER JOIN 결과 (부서 없는 강인턴 제외)"
+        />
 
         <h3>Oracle 전용 JOIN 문법</h3>
-        <pre><code>{`-- INNER JOIN (Oracle)
+        <SqlBlock
+          title="Oracle JOIN"
+          sql={`-- INNER JOIN (Oracle)
 SELECT e.사원명, d.부서명
 FROM 사원 e, 부서 d
 WHERE e.부서번호 = d.부서번호;
@@ -57,7 +77,8 @@ WHERE e.부서번호 = d.부서번호;
 -- LEFT OUTER JOIN (Oracle) - (+)는 부족한 쪽에
 SELECT e.사원명, d.부서명
 FROM 사원 e, 부서 d
-WHERE e.부서번호 = d.부서번호(+);`}</code></pre>
+WHERE e.부서번호 = d.부서번호(+);`}
+        />
 
         <div className="info-box">
           <strong>Oracle (+) 기호 주의:</strong><br/>
@@ -67,14 +88,17 @@ WHERE e.부서번호 = d.부서번호(+);`}</code></pre>
         </div>
 
         <h3>USING과 ON의 차이</h3>
-        <pre><code>{`-- ON: 컬럼명이 다를 때도 사용 가능
+        <SqlBlock
+          title="ON vs USING"
+          sql={`-- ON: 컬럼명이 다를 때도 사용 가능
 SELECT * FROM 사원 e JOIN 부서 d
 ON e.부서번호 = d.부서코드;
 
 -- USING: 컬럼명이 같을 때만 사용
 SELECT * FROM 사원 JOIN 부서
 USING (부서번호);
--- USING 사용 시 테이블 별칭 불가 (부서번호에 별칭 X)`}</code></pre>
+-- USING 사용 시 테이블 별칭 불가 (부서번호에 별칭 X)`}
+        />
 
         <h2>2. 서브쿼리 (Subquery)</h2>
         <p>
@@ -95,20 +119,48 @@ USING (부서번호);
         </table>
 
         <h3>스칼라 서브쿼리</h3>
-        <pre><code>{`SELECT 사원명,
+        <SqlBlock
+          title="스칼라 서브쿼리"
+          sql={`SELECT 사원명,
        (SELECT 부서명 FROM 부서 d
         WHERE d.부서번호 = e.부서번호) AS 부서명
-FROM 사원 e;`}</code></pre>
+FROM 사원 e;`}
+          columns={['사원명', '부서명']}
+          rows={[
+            { 사원명: '김사장', 부서명: '개발팀' },
+            { 사원명: '이부장', 부서명: '개발팀' },
+            { 사원명: '박과장', 부서명: '개발팀' },
+            { 사원명: '최대리', 부서명: '인사팀' },
+            { 사원명: '정사원', 부서명: '인사팀' },
+            { 사원명: '한대리', 부서명: '영업팀' },
+            { 사원명: '오사원', 부서명: '영업팀' },
+            { 사원명: '강인턴', 부서명: null },
+          ]}
+        />
 
         <h3>인라인 뷰</h3>
-        <pre><code>{`SELECT *
+        <SqlBlock
+          title="인라인 뷰 (TOP-N)"
+          sql={`SELECT *
 FROM (SELECT 사원명, 연봉,
              RANK() OVER (ORDER BY 연봉 DESC) AS 순위
       FROM 사원) t
-WHERE t.순위 <= 5;`}</code></pre>
+WHERE t.순위 <= 5;`}
+          columns={['사원명', '연봉', '순위']}
+          rows={[
+            { 사원명: '김사장', 연봉: 9000, 순위: 1 },
+            { 사원명: '이부장', 연봉: 7000, 순위: 2 },
+            { 사원명: '박과장', 연봉: 5000, 순위: 3 },
+            { 사원명: '최대리', 연봉: 3500, 순위: 4 },
+            { 사원명: '한대리', 연봉: 3200, 순위: 5 },
+          ]}
+          description="RANK에서 NULL 연봉 제외 시 기준 (NULL은 가장 큰 값)"
+        />
 
         <h3>중첩 서브쿼리</h3>
-        <pre><code>{`-- 단일행 서브쿼리 (=, >, < 사용)
+        <SqlBlock
+          title="중첩 서브쿼리"
+          sql={`-- 단일행 서브쿼리 (=, >, < 사용)
 SELECT * FROM 사원
 WHERE 연봉 > (SELECT AVG(연봉) FROM 사원);
 
@@ -120,7 +172,15 @@ WHERE 부서번호 IN (SELECT 부서번호 FROM 부서
 -- 상관 서브쿼리 (외부 테이블 참조)
 SELECT * FROM 사원 e
 WHERE 연봉 > (SELECT AVG(연봉) FROM 사원
-              WHERE 부서번호 = e.부서번호);`}</code></pre>
+              WHERE 부서번호 = e.부서번호);`}
+          columns={['사원명', '연봉']}
+          rows={[
+            { 사원명: '김사장', 연봉: 9000 },
+            { 사원명: '이부장', 연봉: 7000 },
+            { 사원명: '박과장', 연봉: 5000 },
+          ]}
+          description="AVG(연봉) ≈ 4714 보다 큰 사원 (NULL 제외 계산)"
+        />
 
         <h3>다중행 연산자</h3>
         <table>
@@ -148,10 +208,21 @@ WHERE 연봉 > (SELECT AVG(연봉) FROM 사원
           </tbody>
         </table>
 
-        <pre><code>{`-- 부서 10과 20의 사원 합집합
+        <SqlBlock
+          title="UNION ALL"
+          sql={`-- 부서 10과 20의 사원 합집합
 SELECT 사원명 FROM 사원 WHERE 부서번호 = 10
 UNION ALL
-SELECT 사원명 FROM 사원 WHERE 부서번호 = 20;`}</code></pre>
+SELECT 사원명 FROM 사원 WHERE 부서번호 = 20;`}
+          columns={['사원명']}
+          rows={[
+            { 사원명: '김사장' },
+            { 사원명: '이부장' },
+            { 사원명: '박과장' },
+            { 사원명: '최대리' },
+            { 사원명: '정사원' },
+          ]}
+        />
 
         <h2>4. 윈도우 함수 (Window Function)</h2>
         <p>
@@ -160,11 +231,14 @@ SELECT 사원명 FROM 사원 WHERE 부서번호 = 20;`}</code></pre>
         </p>
 
         <h3>기본 문법</h3>
-        <pre><code>{`함수명() OVER (
+        <SqlBlock
+          title="윈도우 함수 문법"
+          sql={`함수명() OVER (
   [PARTITION BY 그룹컬럼]
   [ORDER BY 정렬컬럼]
   [ROWS/RANGE BETWEEN ... AND ...]
-)`}</code></pre>
+)`}
+        />
 
         <h3>순위 함수</h3>
         <table>
@@ -178,18 +252,47 @@ SELECT 사원명 FROM 사원 WHERE 부서번호 = 20;`}</code></pre>
           </tbody>
         </table>
 
-        <pre><code>{`SELECT 사원명, 연봉,
+        <SqlBlock
+          title="순위 함수"
+          sql={`SELECT 사원명, 연봉,
        RANK() OVER (ORDER BY 연봉 DESC) AS RANK순위,
        DENSE_RANK() OVER (ORDER BY 연봉 DESC) AS DENSE순위,
        ROW_NUMBER() OVER (ORDER BY 연봉 DESC) AS ROW순위
-FROM 사원;`}</code></pre>
+FROM 사원;`}
+          columns={['사원명', '연봉', 'RANK순위', 'DENSE순위', 'ROW순위']}
+          rows={[
+            { 사원명: '강인턴', 연봉: null, RANK순위: 1, DENSE순위: 1, ROW순위: 1 },
+            { 사원명: '김사장', 연봉: 9000, RANK순위: 2, DENSE순위: 2, ROW순위: 2 },
+            { 사원명: '이부장', 연봉: 7000, RANK순위: 3, DENSE순위: 3, ROW순위: 3 },
+            { 사원명: '박과장', 연봉: 5000, RANK순위: 4, DENSE순위: 4, ROW순위: 4 },
+            { 사원명: '최대리', 연봉: 3500, RANK순위: 5, DENSE순위: 5, ROW순위: 5 },
+            { 사원명: '한대리', 연봉: 3200, RANK순위: 6, DENSE순위: 6, ROW순위: 6 },
+            { 사원명: '정사원', 연봉: 2800, RANK순위: 7, DENSE순위: 7, ROW순위: 7 },
+            { 사원명: '오사원', 연봉: 2500, RANK순위: 8, DENSE순위: 8, ROW순위: 8 },
+          ]}
+          description="Oracle에서 NULL은 DESC 시 가장 처음에 옵니다"
+        />
 
         <h3>집계 윈도우 함수</h3>
-        <pre><code>{`SELECT 사원명, 부서번호, 연봉,
+        <SqlBlock
+          title="집계 윈도우 함수"
+          sql={`SELECT 사원명, 부서번호, 연봉,
        SUM(연봉) OVER (PARTITION BY 부서번호) AS 부서합계,
        AVG(연봉) OVER (PARTITION BY 부서번호) AS 부서평균,
        SUM(연봉) OVER (ORDER BY 입사일) AS 누적합계
-FROM 사원;`}</code></pre>
+FROM 사원;`}
+          columns={['사원명', '부서번호', '연봉', '부서합계']}
+          rows={[
+            { 사원명: '김사장', 부서번호: 10, 연봉: 9000, 부서합계: 21000 },
+            { 사원명: '이부장', 부서번호: 10, 연봉: 7000, 부서합계: 21000 },
+            { 사원명: '박과장', 부서번호: 10, 연봉: 5000, 부서합계: 21000 },
+            { 사원명: '최대리', 부서번호: 20, 연봉: 3500, 부서합계: 6300 },
+            { 사원명: '정사원', 부서번호: 20, 연봉: 2800, 부서합계: 6300 },
+            { 사원명: '한대리', 부서번호: 30, 연봉: 3200, 부서합계: 5700 },
+            { 사원명: '오사원', 부서번호: 30, 연봉: 2500, 부서합계: 5700 },
+          ]}
+          description="NULL 부서(강인턴)는 별도 파티션으로 처리"
+        />
 
         <h3>행 순서 함수</h3>
         <table>
@@ -205,12 +308,26 @@ FROM 사원;`}</code></pre>
         </table>
 
         <h2>5. 계층형 쿼리 (Oracle)</h2>
-        <pre><code>{`SELECT LEVEL, LPAD(' ', (LEVEL-1)*2) || 사원명 AS 조직도,
+        <SqlBlock
+          title="계층형 쿼리"
+          sql={`SELECT LEVEL, LPAD(' ', (LEVEL-1)*2) || 사원명 AS 조직도,
        사원번호, 관리자번호
 FROM 사원
 START WITH 관리자번호 IS NULL    -- 루트 노드
 CONNECT BY PRIOR 사원번호 = 관리자번호  -- 부모→자식 방향
-ORDER SIBLINGS BY 사원명;        -- 같은 레벨 내 정렬`}</code></pre>
+ORDER SIBLINGS BY 사원명;        -- 같은 레벨 내 정렬`}
+          columns={['LEVEL', '조직도', '사원번호', '관리자번호']}
+          rows={[
+            { LEVEL: 1, 조직도: '김사장',     사원번호: 1001, 관리자번호: null },
+            { LEVEL: 2, 조직도: '  이부장',   사원번호: 1002, 관리자번호: 1001 },
+            { LEVEL: 3, 조직도: '    박과장',  사원번호: 1003, 관리자번호: 1002 },
+            { LEVEL: 4, 조직도: '      강인턴', 사원번호: 1008, 관리자번호: 1003 },
+            { LEVEL: 3, 조직도: '    최대리',  사원번호: 1004, 관리자번호: 1002 },
+            { LEVEL: 4, 조직도: '      정사원', 사원번호: 1005, 관리자번호: 1004 },
+            { LEVEL: 2, 조직도: '  한대리',   사원번호: 1006, 관리자번호: 1001 },
+            { LEVEL: 3, 조직도: '    오사원',  사원번호: 1007, 관리자번호: 1006 },
+          ]}
+        />
 
         <h3>계층형 쿼리 키워드</h3>
         <table>
@@ -234,7 +351,9 @@ ORDER SIBLINGS BY 사원명;        -- 같은 레벨 내 정렬`}</code></pre>
         </div>
 
         <h2>6. PIVOT / UNPIVOT</h2>
-        <pre><code>{`-- PIVOT: 행 → 열 변환
+        <SqlBlock
+          title="PIVOT / UNPIVOT"
+          sql={`-- PIVOT: 행 → 열 변환
 SELECT *
 FROM (SELECT 부서번호, 직급, 연봉 FROM 사원)
 PIVOT (SUM(연봉) FOR 직급 IN ('과장', '대리', '사원'));
@@ -242,7 +361,8 @@ PIVOT (SUM(연봉) FOR 직급 IN ('과장', '대리', '사원'));
 -- UNPIVOT: 열 → 행 변환
 SELECT *
 FROM 매출테이블
-UNPIVOT (매출액 FOR 분기 IN (Q1, Q2, Q3, Q4));`}</code></pre>
+UNPIVOT (매출액 FOR 분기 IN (Q1, Q2, Q3, Q4));`}
+        />
 
         <h2>7. 정규 표현식 함수</h2>
         <table>

@@ -39,6 +39,8 @@ sqld-repo/
 │   ├── components/
 │   │   ├── SEOHead.jsx          # 동적 SEO 메타태그
 │   │   ├── LessonComplete.jsx   # 학습 완료 버튼
+│   │   ├── SqlBlock.jsx         # SQL 코드 + 실행 결과 컴포넌트
+│   │   ├── SampleDataPanel.jsx  # 접이식 샘플 데이터 패널
 │   │   ├── BadgeCard.jsx        # 배지 카드
 │   │   ├── Certificate.jsx      # 수료증 (PDF/PNG 다운로드)
 │   │   ├── StampGrid.jsx        # 진행 스탬프 그리드
@@ -50,6 +52,8 @@ sqld-repo/
 │   │   ├── LanguageContext.jsx  # 언어 관리 (ko/en)
 │   │   ├── AuthContext.jsx      # 인증 관리 (Supabase)
 │   │   └── ProgressContext.jsx  # 학습 진행 관리 (localStorage + Supabase)
+│   ├── data/
+│   │   └── sampleData.js        # 공통 샘플 데이터 (부서/사원)
 │   ├── config/
 │   │   ├── site.js              # 사이트 설정 (메뉴, 이름, URL)
 │   │   ├── studyItems.js        # 학습 항목 정의 (15개 레슨 + 4개 시험)
@@ -75,6 +79,7 @@ sqld-repo/
 │   │   ├── auth.css             # 로그인/회원가입
 │   │   ├── profile.css          # 프로필 페이지
 │   │   ├── progress.css         # 학습 현황
+│   │   ├── sql-block.css        # SQL 블록 + 샘플 데이터 패널
 │   │   ├── dark-mode.css        # 다크 모드
 │   │   └── responsive.css       # 반응형
 │   └── pages/
@@ -447,17 +452,74 @@ sqld-repo/
 
 ---
 
+### 2026-03-18 (Day 1 - 7차) - SQL 코드 + 실행 결과 표시 기능 구현
+
+#### 배경
+- 9개 SQL 콘텐츠 페이지에서 `<pre><code>` 블록으로 SQL 코드만 표시하고 있었음
+- 사용자가 SQL을 보고 바로 실행 결과를 확인하며 공부할 수 있도록 **SQL 코드 + 실행 결과 테이블**을 함께 표시하는 기능 추가
+- 샘플 데이터(부서 4행, 사원 8행)를 기반으로 모든 쿼리의 예상 결과를 미리 계산하여 표시
+
+#### 새로 생성한 파일 (4개)
+
+| # | 파일 | 설명 |
+|---|------|------|
+| 1 | `src/data/sampleData.js` | 공통 샘플 데이터 (부서 4행, 사원 8행) + DDL/DML SQL 문자열 |
+| 2 | `src/components/SqlBlock.jsx` | SQL 코드 + 결과 테이블 통합 컴포넌트 (Copy 버튼, NULL 이탤릭 표시) |
+| 3 | `src/components/SampleDataPanel.jsx` | 접이식 샘플 데이터 패널 (부서/사원 테이블 참조용) |
+| 4 | `src/styles/sql-block.css` | SqlBlock + SampleDataPanel CSS (다크모드 + 반응형 지원) |
+
+#### SqlBlock 컴포넌트 구조
+```
+┌──────────────────────────────────┐
+│ [</>] title              [복사]  │  ← 헤더 (dark #2d3748)
+├──────────────────────────────────┤
+│ SELECT 사원명, 연봉              │  ← SQL 코드 (#1a202c, Consolas)
+│ FROM 사원 WHERE ...              │
+├──────────────────────────────────┤
+│ [표] 실행 결과 (N건)             │  ← 결과 헤더 (blue accent)
+├──────────────────────────────────┤
+│ 사원명   │ 연봉                  │  ← 결과 테이블 (monospace)
+│ 김사장   │ 9000                  │
+│ 이부장   │ 7000                  │
+└──────────────────────────────────┘
+```
+- Props: `{ title?, sql, columns?, rows?, description? }`
+- columns/rows 없으면 결과 테이블 생략 (DDL/DML용)
+- null 값은 `(NULL)` 이탤릭 표시
+- Copy 버튼으로 SQL 클립보드 복사
+
+#### 수정한 파일 (10개)
+
+| # | 파일 | 수정 내용 |
+|---|------|----------|
+| 1 | `src/index.css` | `sql-block.css` import 추가 |
+| 2 | `SqlRefJoin.jsx` | SampleDataPanel + INNER/LEFT/RIGHT/FULL/SELF JOIN 각각 결과 테이블 (7개 SqlBlock) |
+| 3 | `Subject2Ch1.jsx` | SampleDataPanel + SELECT, GROUP BY, ORDER BY, TCL 결과 테이블 |
+| 4 | `Subject2Ch2.jsx` | SampleDataPanel + JOIN, 스칼라 서브쿼리, 인라인뷰, 윈도우함수, 계층형쿼리 결과 |
+| 5 | `Subject2Ch3.jsx` | SampleDataPanel + MERGE, DCL, VIEW, SEQUENCE, INDEX (코드만) |
+| 6 | `SqlRefDML.jsx` | SampleDataPanel + SELECT, ORDER BY 결과 테이블 |
+| 7 | `SqlRefSubquery.jsx` | SampleDataPanel + 스칼라, 인라인뷰, 다중행, 상관 서브쿼리, CTE 결과 |
+| 8 | `SqlRefFunctions.jsx` | SampleDataPanel + CASE 표현식 결과 |
+| 9 | `SqlRefDDL.jsx` | SampleDataPanel + Copy 버튼만 (DDL은 결과 테이블 없음) |
+| 10 | `Training.jsx` | SampleDataPanel 교체 + 연습 문제 10개 정답에 SqlBlock 결과 추가 |
+
+#### 총 SqlBlock 인스턴스: 약 50개
+- 결과 테이블 포함: 약 30개
+- 코드만 (DDL/DML/DCL): 약 20개
+
+---
+
 #### 총 개발 결과
 | 항목 | 수량 |
 |------|------|
-| 전체 파일 수 | 68개 |
-| 코드 라인 수 | 약 14,900줄 |
-| React 컴포넌트 | 7개 |
+| 전체 파일 수 | 72개 |
+| 코드 라인 수 | 약 16,500줄 |
+| React 컴포넌트 | 9개 |
 | 페이지 | 25개 |
 | Context | 4개 |
 | 커스텀 훅 | 4개 |
-| CSS 파일 | 12개 |
-| 설정 파일 | 3개 |
+| CSS 파일 | 13개 |
+| 설정/데이터 파일 | 4개 |
 | 모의고사 문항 | 40문항 (1-2회) |
 
 ---

@@ -1,5 +1,7 @@
 import SEOHead from '../components/SEOHead';
 import LessonComplete from '../components/LessonComplete';
+import SqlBlock from '../components/SqlBlock';
+import SampleDataPanel from '../components/SampleDataPanel';
 
 export default function Subject2Ch3() {
   return (
@@ -12,23 +14,30 @@ export default function Subject2Ch3() {
       </section>
 
       <article className="content-card" data-aos="fade-up">
+        <SampleDataPanel />
+
         <h2>1. MERGE 문</h2>
         <p>
           MERGE는 <strong>INSERT와 UPDATE를 동시에</strong> 수행하는 DML입니다.
           대상 테이블에 데이터가 있으면 UPDATE, 없으면 INSERT합니다.
         </p>
 
-        <pre><code>{`MERGE INTO 대상테이블 T
+        <SqlBlock
+          title="MERGE 기본 문법"
+          sql={`MERGE INTO 대상테이블 T
 USING 소스테이블 S
 ON (T.키 = S.키)
 WHEN MATCHED THEN
   UPDATE SET T.컬럼1 = S.컬럼1, T.컬럼2 = S.컬럼2
 WHEN NOT MATCHED THEN
   INSERT (T.키, T.컬럼1, T.컬럼2)
-  VALUES (S.키, S.컬럼1, S.컬럼2);`}</code></pre>
+  VALUES (S.키, S.컬럼1, S.컬럼2);`}
+        />
 
         <h3>MERGE 활용 예시</h3>
-        <pre><code>{`-- 일별 매출 집계 테이블 갱신
+        <SqlBlock
+          title="MERGE 활용"
+          sql={`-- 일별 매출 집계 테이블 갱신
 MERGE INTO 일매출 T
 USING (SELECT 매장코드, TRUNC(SYSDATE) AS 매출일,
               SUM(금액) AS 총매출
@@ -40,7 +49,9 @@ WHEN MATCHED THEN
   UPDATE SET T.총매출 = S.총매출
 WHEN NOT MATCHED THEN
   INSERT (매장코드, 매출일, 총매출)
-  VALUES (S.매장코드, S.매출일, S.총매출);`}</code></pre>
+  VALUES (S.매장코드, S.매출일, S.총매출);`}
+          description="MATCHED → UPDATE, NOT MATCHED → INSERT"
+        />
 
         <h2>2. TCL 심화 (Transaction Control)</h2>
 
@@ -97,15 +108,20 @@ WHEN NOT MATCHED THEN
           </tbody>
         </table>
 
-        <pre><code>{`CREATE TABLE 주문 (
+        <SqlBlock
+          title="FOREIGN KEY ON DELETE"
+          sql={`CREATE TABLE 주문 (
   주문번호 NUMBER PRIMARY KEY,
   고객번호 NUMBER REFERENCES 고객(고객번호)
     ON DELETE CASCADE,      -- 고객 삭제 시 주문도 삭제
   주문일자 DATE
-);`}</code></pre>
+);`}
+        />
 
         <h3>제약조건 관리</h3>
-        <pre><code>{`-- 제약조건 추가
+        <SqlBlock
+          title="제약조건 관리"
+          sql={`-- 제약조건 추가
 ALTER TABLE 사원 ADD CONSTRAINT pk_사원
   PRIMARY KEY (사원번호);
 
@@ -117,36 +133,48 @@ ALTER TABLE 사원 DROP CONSTRAINT pk_사원;
 
 -- 제약조건 비활성화/활성화
 ALTER TABLE 사원 DISABLE CONSTRAINT fk_부서;
-ALTER TABLE 사원 ENABLE CONSTRAINT fk_부서;`}</code></pre>
+ALTER TABLE 사원 ENABLE CONSTRAINT fk_부서;`}
+        />
 
         <h2>4. DCL (Data Control Language)</h2>
 
         <h3>GRANT - 권한 부여</h3>
-        <pre><code>{`-- 시스템 권한 부여
+        <SqlBlock
+          title="GRANT"
+          sql={`-- 시스템 권한 부여
 GRANT CREATE TABLE, CREATE VIEW TO user1;
 
 -- 객체 권한 부여
 GRANT SELECT, INSERT ON 사원 TO user1;
 
 -- WITH GRANT OPTION: 받은 권한을 다른 사용자에게 줄 수 있음
-GRANT SELECT ON 사원 TO user1 WITH GRANT OPTION;`}</code></pre>
+GRANT SELECT ON 사원 TO user1 WITH GRANT OPTION;`}
+        />
 
         <h3>REVOKE - 권한 회수</h3>
-        <pre><code>{`REVOKE SELECT ON 사원 FROM user1;
+        <SqlBlock
+          title="REVOKE"
+          sql={`REVOKE SELECT ON 사원 FROM user1;
 
 -- CASCADE: WITH GRANT OPTION으로 전파된 권한도 함께 회수
-REVOKE SELECT ON 사원 FROM user1 CASCADE;`}</code></pre>
+REVOKE SELECT ON 사원 FROM user1 CASCADE;`}
+        />
 
         <h3>ROLE - 권한 그룹</h3>
-        <pre><code>{`-- ROLE 생성 및 권한 부여
+        <SqlBlock
+          title="ROLE"
+          sql={`-- ROLE 생성 및 권한 부여
 CREATE ROLE manager_role;
 GRANT SELECT, INSERT, UPDATE ON 사원 TO manager_role;
 
 -- 사용자에게 ROLE 부여
-GRANT manager_role TO user1, user2;`}</code></pre>
+GRANT manager_role TO user1, user2;`}
+        />
 
         <h2>5. VIEW (뷰)</h2>
-        <pre><code>{`-- 뷰 생성
+        <SqlBlock
+          title="VIEW"
+          sql={`-- 뷰 생성
 CREATE OR REPLACE VIEW 서울사원 AS
 SELECT 사원번호, 사원명, 부서번호
 FROM 사원
@@ -154,7 +182,8 @@ WHERE 지역 = '서울'
 WITH CHECK OPTION;  -- 뷰 조건 위반 DML 방지
 
 -- 뷰 삭제
-DROP VIEW 서울사원;`}</code></pre>
+DROP VIEW 서울사원;`}
+        />
 
         <h3>뷰의 특징</h3>
         <ul>
@@ -168,7 +197,9 @@ DROP VIEW 서울사원;`}</code></pre>
         <h2>6. 기타 객체</h2>
 
         <h3>시퀀스 (SEQUENCE)</h3>
-        <pre><code>{`CREATE SEQUENCE emp_seq
+        <SqlBlock
+          title="SEQUENCE"
+          sql={`CREATE SEQUENCE emp_seq
   START WITH 1
   INCREMENT BY 1
   MAXVALUE 99999
@@ -177,17 +208,21 @@ DROP VIEW 서울사원;`}</code></pre>
 
 -- 사용
 INSERT INTO 사원 (사원번호) VALUES (emp_seq.NEXTVAL);
-SELECT emp_seq.CURRVAL FROM DUAL;`}</code></pre>
+SELECT emp_seq.CURRVAL FROM DUAL;`}
+        />
 
         <h3>인덱스 (INDEX)</h3>
-        <pre><code>{`-- 인덱스 생성
+        <SqlBlock
+          title="INDEX"
+          sql={`-- 인덱스 생성
 CREATE INDEX idx_사원_부서 ON 사원(부서번호);
 
 -- 유니크 인덱스
 CREATE UNIQUE INDEX idx_사원_이메일 ON 사원(이메일);
 
 -- 인덱스 삭제
-DROP INDEX idx_사원_부서;`}</code></pre>
+DROP INDEX idx_사원_부서;`}
+        />
 
         <h3>인덱스 사용이 유리한 경우</h3>
         <ul>

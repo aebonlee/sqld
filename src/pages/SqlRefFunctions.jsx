@@ -1,5 +1,7 @@
 import SEOHead from '../components/SEOHead';
 import LessonComplete from '../components/LessonComplete';
+import SqlBlock from '../components/SqlBlock';
+import SampleDataPanel from '../components/SampleDataPanel';
 
 export default function SqlRefFunctions() {
   return (
@@ -12,6 +14,8 @@ export default function SqlRefFunctions() {
       </section>
 
       <article className="content-card" data-aos="fade-up">
+        <SampleDataPanel />
+
         <h2>문자열 함수</h2>
         <table>
           <thead>
@@ -106,7 +110,9 @@ export default function SqlRefFunctions() {
         </table>
 
         <h2>CASE 표현식</h2>
-        <pre><code>{`-- Simple CASE
+        <SqlBlock
+          title="CASE 표현식"
+          sql={`-- Simple CASE
 CASE 컬럼
   WHEN 값1 THEN 결과1
   WHEN 값2 THEN 결과2
@@ -121,7 +127,20 @@ CASE
 END
 
 -- Oracle DECODE (CASE 대안)
-DECODE(컬럼, 값1, 결과1, 값2, 결과2, 기본값)`}</code></pre>
+DECODE(컬럼, 값1, 결과1, 값2, 결과2, 기본값)`}
+          columns={['사원명', '연봉등급']}
+          rows={[
+            { 사원명: '김사장', 연봉등급: '상' },
+            { 사원명: '이부장', 연봉등급: '상' },
+            { 사원명: '박과장', 연봉등급: '중' },
+            { 사원명: '최대리', 연봉등급: '중' },
+            { 사원명: '한대리', 연봉등급: '중' },
+            { 사원명: '정사원', 연봉등급: '하' },
+            { 사원명: '오사원', 연봉등급: '하' },
+            { 사원명: '강인턴', 연봉등급: '없음' },
+          ]}
+          description="CASE WHEN 연봉 >= 5000 THEN '상' WHEN 연봉 >= 3000 THEN '중' WHEN 연봉 IS NOT NULL THEN '하' ELSE '없음' END"
+        />
 
         <h2>집계 함수</h2>
         <table>
