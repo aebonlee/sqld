@@ -11,7 +11,7 @@ export default function ExamRound4() {
       </section>
 
       <article className="content-card" data-aos="fade-up" style={{ textAlign: 'center', padding: '60px 20px' }}>
-        <div style={{ fontSize: '64px', marginBottom: '20px' }}>📝</div>
+        <div style={{ fontSize: '64px', marginBottom: '20px' }}><i className="fa-solid fa-pen-to-square"></i></div>
         <h2>준비 중입니다</h2>
         <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>
           4회 모의고사는 현재 문제를 준비하고 있습니다.<br/>

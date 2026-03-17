@@ -6,24 +6,24 @@ const Home = () => {
   const { t } = useLanguage();
 
   const subject1Curriculum = [
-    { title: '과목 개요', desc: '데이터 모델링의 이해 과목 구성과 출제 비중 안내', path: '/subject1/overview', icon: '📋' },
-    { title: '데이터 모델링의 이해', desc: '데이터 모델의 이해, 엔터티, 속성, 관계, 식별자', path: '/subject1/ch1', icon: '🗃️' },
-    { title: '데이터 모델과 SQL', desc: '정규화, 관계와 조인, 모델이 성능에 미치는 영향', path: '/subject1/ch2', icon: '🔗' },
+    { title: '과목 개요', desc: '데이터 모델링의 이해 과목 구성과 출제 비중 안내', path: '/subject1/overview', icon: 'fa-solid fa-clipboard-list' },
+    { title: '데이터 모델링의 이해', desc: '데이터 모델의 이해, 엔터티, 속성, 관계, 식별자', path: '/subject1/ch1', icon: 'fa-solid fa-cubes' },
+    { title: '데이터 모델과 SQL', desc: '정규화, 관계와 조인, 모델이 성능에 미치는 영향', path: '/subject1/ch2', icon: 'fa-solid fa-link' },
   ];
 
   const subject2Curriculum = [
-    { title: '과목 개요', desc: 'SQL 기본 및 활용 과목 구성과 출제 비중 안내', path: '/subject2/overview', icon: '📋' },
-    { title: 'SQL 기본', desc: 'DDL, DML, TCL, WHERE 절, 함수, GROUP BY, ORDER BY', path: '/subject2/ch1', icon: '💻' },
-    { title: 'SQL 활용', desc: '표준 조인, 서브쿼리, 그룹 함수, 윈도우 함수, 계층형 질의', path: '/subject2/ch2', icon: '⚙️' },
-    { title: '관리 구문', desc: 'DML, TCL, DDL 심화, DCL', path: '/subject2/ch3', icon: '🔧' },
+    { title: '과목 개요', desc: 'SQL 기본 및 활용 과목 구성과 출제 비중 안내', path: '/subject2/overview', icon: 'fa-solid fa-clipboard-list' },
+    { title: 'SQL 기본', desc: 'DDL, DML, TCL, WHERE 절, 함수, GROUP BY, ORDER BY', path: '/subject2/ch1', icon: 'fa-solid fa-laptop-code' },
+    { title: 'SQL 활용', desc: '표준 조인, 서브쿼리, 그룹 함수, 윈도우 함수, 계층형 질의', path: '/subject2/ch2', icon: 'fa-solid fa-gears' },
+    { title: '관리 구문', desc: 'DML, TCL, DDL 심화, DCL', path: '/subject2/ch3', icon: 'fa-solid fa-wrench' },
   ];
 
   const sqlRefCards = [
-    { title: 'DDL', desc: 'CREATE, ALTER, DROP, RENAME, TRUNCATE', path: '/sqlref/ddl', icon: '🏗️' },
-    { title: 'DML', desc: 'SELECT, INSERT, UPDATE, DELETE, MERGE', path: '/sqlref/dml', icon: '📝' },
-    { title: '함수', desc: '문자, 숫자, 날짜, 변환, NULL 관련 함수', path: '/sqlref/functions', icon: '🔢' },
-    { title: 'JOIN', desc: 'INNER, OUTER, CROSS, NATURAL, SELF JOIN', path: '/sqlref/join', icon: '🔗' },
-    { title: '서브쿼리', desc: '스칼라, 인라인뷰, 상관, EXISTS, IN', path: '/sqlref/subquery', icon: '🔍' },
+    { title: 'DDL', desc: 'CREATE, ALTER, DROP, RENAME, TRUNCATE', path: '/sqlref/ddl', icon: 'fa-solid fa-hammer' },
+    { title: 'DML', desc: 'SELECT, INSERT, UPDATE, DELETE, MERGE', path: '/sqlref/dml', icon: 'fa-solid fa-pen-to-square' },
+    { title: '함수', desc: '문자, 숫자, 날짜, 변환, NULL 관련 함수', path: '/sqlref/functions', icon: 'fa-solid fa-calculator' },
+    { title: 'JOIN', desc: 'INNER, OUTER, CROSS, NATURAL, SELF JOIN', path: '/sqlref/join', icon: 'fa-solid fa-link' },
+    { title: '서브쿼리', desc: '스칼라, 인라인뷰, 상관, EXISTS, IN', path: '/sqlref/subquery', icon: 'fa-solid fa-magnifying-glass' },
   ];
 
   return (
@@ -77,7 +77,7 @@ const Home = () => {
           <div className="home-curriculum-grid">
             {subject1Curriculum.map((item, i) => (
               <Link to={item.path} key={i} className="home-curriculum-card" data-aos="fade-up" data-aos-delay={i * 50}>
-                <span className="home-curriculum-icon">{item.icon}</span>
+                <span className="home-curriculum-icon"><i className={item.icon}></i></span>
                 <h3 className="home-curriculum-title">{item.title}</h3>
                 <p className="home-curriculum-desc">{item.desc}</p>
               </Link>
@@ -95,7 +95,7 @@ const Home = () => {
           <div className="home-curriculum-grid">
             {subject2Curriculum.map((item, i) => (
               <Link to={item.path} key={i} className="home-curriculum-card" data-aos="fade-up" data-aos-delay={i * 50}>
-                <span className="home-curriculum-icon">{item.icon}</span>
+                <span className="home-curriculum-icon"><i className={item.icon}></i></span>
                 <h3 className="home-curriculum-title">{item.title}</h3>
                 <p className="home-curriculum-desc">{item.desc}</p>
               </Link>
@@ -113,7 +113,7 @@ const Home = () => {
           <div className="home-commands-grid">
             {sqlRefCards.map((item, i) => (
               <Link to={item.path} key={i} className="home-command-card" data-aos="fade-up" data-aos-delay={i * 50}>
-                <span className="home-command-icon">{item.icon}</span>
+                <span className="home-command-icon"><i className={item.icon}></i></span>
                 <h3 className="home-command-title">{item.title}</h3>
                 <p className="home-command-desc">{item.desc}</p>
               </Link>

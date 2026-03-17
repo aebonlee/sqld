@@ -9,7 +9,7 @@ export default function BadgeCard({ badge }) {
         className="badge-icon"
         style={{ color: badge.earned ? badge.color : undefined, fontSize: '32px' }}
       >
-        {badge.icon}
+        <i className={badge.icon}></i>
       </div>
       <h4 className="badge-title">{badge.title}</h4>
       <p className="badge-desc">{badge.description}</p>
