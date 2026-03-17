@@ -14,6 +14,8 @@
     --border-medium: #4B5563;
     --glass-bg: rgba(17, 24, 39, 0.85);
     --glass-border: rgba(255, 255, 255, 0.08);
+    --bg-card: var(--bg-light-gray);
+    --primary-rgb: 74, 143, 231;
     /* Brighter primary for dark backgrounds */
     --primary-blue: #4A8FE7;
     --primary-blue-dark: #2B6CC4;
@@ -32,6 +34,7 @@
     --primary-blue-dark: #C42B3B;
     --primary-blue-light: #FD9393;
     --primary-gradient: linear-gradient(135deg, #C42B3B 0%, #E74A5A 100%);
+    --primary-rgb: 231, 74, 90;
 }
 
 [data-theme="dark"][data-color="green"] {
@@ -39,6 +42,7 @@
     --primary-blue-dark: #2BC46A;
     --primary-blue-light: #93FDC5;
     --primary-gradient: linear-gradient(135deg, #2BC46A 0%, #4AE79A 100%);
+    --primary-rgb: 74, 231, 154;
 }
 
 [data-theme="dark"][data-color="purple"] {
@@ -46,6 +50,7 @@
     --primary-blue-dark: #8B2BC4;
     --primary-blue-light: #D493FD;
     --primary-gradient: linear-gradient(135deg, #8B2BC4 0%, #B04AE7 100%);
+    --primary-rgb: 176, 74, 231;
 }
 
 [data-theme="dark"][data-color="orange"] {
@@ -53,6 +58,7 @@
     --primary-blue-dark: #C4832B;
     --primary-blue-light: #FDCF93;
     --primary-gradient: linear-gradient(135deg, #C4832B 0%, #E7A04A 100%);
+    --primary-rgb: 231, 160, 74;
 }
 
 [data-theme="dark"] .particle {

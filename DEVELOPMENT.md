@@ -327,6 +327,33 @@ sqld-repo/
 - 빌드: Vite 7.3.1 (5.20s 소요)
 - 배포: `npx gh-pages -d dist` → Published
 
+### 2026-03-18 (Day 1 - 3차) - 전체 사이트 점검 및 품질 개선
+
+#### 점검 범위
+- 전체 25개 페이지, 7개 컴포넌트, 4개 커스텀 훅, 4개 Context, 3개 Config, 12개 CSS 파일 종합 점검
+
+#### 발견 및 수정된 이슈
+
+| # | 파일 | 이슈 | 심각도 | 수정 내용 |
+|---|------|------|--------|----------|
+| 1 | `base.css` | `--bg-card` CSS 변수 미정의 | **HIGH** | `:root`에 `--bg-card: var(--bg-white)` 추가 |
+| 2 | `base.css` | `--primary-rgb` CSS 변수 미정의 | **HIGH** | `:root`에 `--primary-rgb: 0, 70, 200` 추가 |
+| 3 | `base.css` | 색상 테마별 `--primary-rgb` 누락 | **MEDIUM** | red/green/purple/orange 테마에 각각 RGB값 추가 |
+| 4 | `dark-mode.css` | 다크모드에서 `--bg-card`, `--primary-rgb` 미정의 | **HIGH** | 다크모드 변수 추가 + 테마별 다크모드 RGB값 추가 |
+| 5 | `site.css` | `.info-box` 불필요한 fallback 값 사용 | **LOW** | fallback 제거 (변수 정의 완료됨) |
+| 6 | `BadgeCard.jsx` | 하드코딩 한국어 텍스트 ('획득!'/'미획득') | **MEDIUM** | `useLanguage()` + `t()` i18n 적용 |
+| 7 | `translations.js` | 배지 관련 번역키 누락 | **MEDIUM** | `badge_earned`, `badge_locked` ko/en 추가 |
+| 8 | `usePageTracker.js` | Supabase insert 에러 핸들링 없음 | **MEDIUM** | `.then()` → 에러 로깅 콜백 추가 |
+
+#### 점검 결과 정상 확인 항목
+- 모든 import/export 일치 확인
+- 라우트 경로와 메뉴 링크 일치 확인
+- studyItems.js 레슨 ID와 페이지 LessonComplete 연동 확인
+- ProgressContext 함수명 (recordExamResult 등) 일치 확인
+- 번역키 사용과 translations.js 정의 일치 확인
+- 모의고사 타이머/채점/오답확인 로직 정상 확인
+- ErrorBoundary 및 Lazy Loading 에러 복구 정상 확인
+
 ---
 
 #### 총 개발 결과

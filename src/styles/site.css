@@ -1745,7 +1745,7 @@
 
 /* ─── Info Box ─── */
 .info-box {
-  background: rgba(var(--primary-rgb, 0, 70, 200), 0.06);
+  background: rgba(var(--primary-rgb), 0.06);
   border-left: 4px solid var(--primary-blue);
   border-radius: 8px;
   padding: 16px 20px;
@@ -1780,7 +1780,7 @@
 }
 
 [data-theme="dark"] .info-box {
-  background: rgba(var(--primary-rgb, 0, 70, 200), 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
 }
 
 /* ─── Chapter Grid (Overview Pages) ─── */

@@ -19,6 +19,8 @@ export function usePageTracker(pagePath) {
       page_path: pagePath,
       visitor_id: visitorId,
       viewed_at: new Date().toISOString()
-    }).then();
+    }).then(({ error }) => {
+      if (error) console.warn('Page tracking failed:', error.message);
+    });
   }, [pagePath]);
 }

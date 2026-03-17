@@ -42,6 +42,8 @@
     --radius-xl: 20px;
     --radius-full: 9999px;
     --primary-blue-bg: rgba(0, 70, 200, 0.06);
+    --primary-rgb: 0, 70, 200;
+    --bg-card: var(--bg-white);
     --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --font-mono: 'Courier New', Courier, monospace;
     --success: #22c55e;
@@ -56,6 +58,7 @@ html[data-color="red"] {
     --primary-blue-dark: #8A001A;
     --primary-blue-light: #E74A5A;
     --primary-blue-bg: rgba(200, 16, 46, 0.06);
+    --primary-rgb: 200, 16, 46;
     --primary-gradient: linear-gradient(135deg, #C8102E 0%, #E74A5A 100%);
     --accent-gradient: linear-gradient(135deg, #8A001A 0%, #C8102E 50%, #E74A5A 100%);
     --hero-bg: linear-gradient(135deg, #C8102E 0%, #8A001A 50%, #5F1E28 100%);
@@ -68,6 +71,7 @@ html[data-color="green"] {
     --primary-blue-dark: #005C3E;
     --primary-blue-light: #4AE79A;
     --primary-blue-bg: rgba(0, 133, 90, 0.06);
+    --primary-rgb: 0, 133, 90;
     --primary-gradient: linear-gradient(135deg, #00855A 0%, #4AE79A 100%);
     --accent-gradient: linear-gradient(135deg, #005C3E 0%, #00855A 50%, #4AE79A 100%);
     --hero-bg: linear-gradient(135deg, #00855A 0%, #005C3E 50%, #1E4A35 100%);
@@ -80,6 +84,7 @@ html[data-color="purple"] {
     --primary-blue-dark: #5E008A;
     --primary-blue-light: #B04AE7;
     --primary-blue-bg: rgba(139, 26, 200, 0.06);
+    --primary-rgb: 139, 26, 200;
     --primary-gradient: linear-gradient(135deg, #8B1AC8 0%, #B04AE7 100%);
     --accent-gradient: linear-gradient(135deg, #5E008A 0%, #8B1AC8 50%, #B04AE7 100%);
     --hero-bg: linear-gradient(135deg, #8B1AC8 0%, #5E008A 50%, #3C1E5F 100%);
@@ -92,6 +97,7 @@ html[data-color="orange"] {
     --primary-blue-dark: #8A4E00;
     --primary-blue-light: #E7A04A;
     --primary-blue-bg: rgba(200, 114, 0, 0.06);
+    --primary-rgb: 200, 114, 0;
     --primary-gradient: linear-gradient(135deg, #C87200 0%, #E7A04A 100%);
     --accent-gradient: linear-gradient(135deg, #8A4E00 0%, #C87200 50%, #E7A04A 100%);
     --hero-bg: linear-gradient(135deg, #C87200 0%, #8A4E00 50%, #5F401E 100%);

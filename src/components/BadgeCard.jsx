@@ -1,4 +1,7 @@
+import { useLanguage } from '../contexts/LanguageContext';
+
 export default function BadgeCard({ badge }) {
+  const { t } = useLanguage();
   return (
     <div className={`badge-card ${badge.earned ? 'earned' : 'locked'}`}>
       {badge.earned && <div className="badge-check">&#10003;</div>}
@@ -11,7 +14,7 @@ export default function BadgeCard({ badge }) {
       <h4 className="badge-title">{badge.title}</h4>
       <p className="badge-desc">{badge.description}</p>
       <span className={`badge-status ${badge.earned ? 'earned' : 'locked'}`}>
-        {badge.earned ? '획득!' : '미획득'}
+        {badge.earned ? t('profile.badge_earned') : t('profile.badge_locked')}
       </span>
     </div>
   );

@@ -58,6 +58,8 @@ export const translations = {
       stats: '학습 통계',
       completed_lessons: '완료한 학습',
       exam_results: '모의고사 결과',
+      badge_earned: '획득!',
+      badge_locked: '미획득',
     },
     lesson: {
       complete: '학습 완료',
@@ -155,6 +157,8 @@ export const translations = {
       stats: 'Study Statistics',
       completed_lessons: 'Completed Lessons',
       exam_results: 'Exam Results',
+      badge_earned: 'Earned!',
+      badge_locked: 'Locked',
     },
     lesson: {
       complete: 'Mark Complete',
