@@ -68,7 +68,7 @@ const QUESTIONS = [
 
 export default function ExamRound2() {
   const { t } = useLanguage();
-  const { saveExamResult } = useProgress();
+  const { recordExamResult } = useProgress();
   const [started, setStarted] = useState(false);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -94,8 +94,8 @@ export default function ExamRound2() {
   const handleSubmit = useCallback(() => {
     setSubmitted(true);
     const score = QUESTIONS.reduce((acc, q, i) => answers[i] === q.ans ? acc + 5 : acc, 0);
-    saveExamResult('exam-round2', { score, total: 100, pass: score >= 60 });
-  }, [answers, saveExamResult]);
+    recordExamResult('exam-round2', score, 100);
+  }, [answers, recordExamResult]);
 
   const score = QUESTIONS.reduce((acc, q, i) => answers[i] === q.ans ? acc + 5 : acc, 0);
   const mm = String(Math.floor(timeLeft / 60)).padStart(2, '0');
