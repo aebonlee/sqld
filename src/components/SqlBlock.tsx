@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function SqlBlock({ title, sql, columns, rows, description }) {
+export default function SqlBlock({ title, sql, columns, rows, description }: any) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {

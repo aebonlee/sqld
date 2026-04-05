@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+const ThemeContext = createContext<any>(null);
 
 const getTimeBasedTheme = () => {
   const hour = new Date().getHours();
   return (hour >= 6 && hour < 18) ? 'light' : 'dark';
 };
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({ children }: any) => {
   const [mode, setMode] = useState('auto');
   const [theme, setTheme] = useState(() => getTimeBasedTheme());
   const [colorTheme, setColorTheme] = useState('blue');

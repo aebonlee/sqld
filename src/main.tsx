@@ -8,7 +8,7 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import App from './App';
 import './index.css';
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };

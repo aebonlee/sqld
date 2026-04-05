@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useProgress } from '../contexts/ProgressContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function StampGrid({ items, type }) {
+export default function StampGrid({ items, type }: any) {
   const { isLessonCompleted, getExamResult } = useProgress();
   const { language } = useLanguage();
 

@@ -1,7 +1,7 @@
 import { useProgress } from '../contexts/ProgressContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function LessonComplete({ lessonId }) {
+export default function LessonComplete({ lessonId }: any) {
   const { isLessonCompleted, toggleLesson } = useProgress();
   const { t } = useLanguage();
   const completed = isLessonCompleted(lessonId);

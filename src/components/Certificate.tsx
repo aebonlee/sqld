@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function Certificate({ displayName, completedLessons, totalLessons, bestExamScore }) {
+export default function Certificate({ displayName, completedLessons, totalLessons, bestExamScore }: any) {
   const { t } = useLanguage();
   const certRef = useRef(null);
   const [downloading, setDownloading] = useState(false);

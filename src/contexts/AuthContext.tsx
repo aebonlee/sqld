@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-const AuthContext = createContext();
+const AuthContext = createContext<any>(null);
 
-export function AuthProvider({ children }) {
+export function AuthProvider({ children }: any) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(isSupabaseConfigured());

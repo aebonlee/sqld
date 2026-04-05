@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef } f
 import { useAuth } from './AuthContext';
 import { supabase } from '../lib/supabase';
 
-const ProgressContext = createContext();
+const ProgressContext = createContext<any>(null);
 
 const LESSON_KEY = 'sqld-study-lessons';
 const EXAM_KEY = 'sqld-study-exams';
@@ -33,7 +33,7 @@ function saveLocalExams(exams) {
   localStorage.setItem(EXAM_KEY, JSON.stringify(exams));
 }
 
-export function ProgressProvider({ children }) {
+export function ProgressProvider({ children }: any) {
   const { user, isAuthenticated } = useAuth();
   const [completedLessons, setCompletedLessons] = useState(loadLocalLessons);
   const [examResults, setExamResults] = useState(loadLocalExams);

@@ -58,10 +58,10 @@ export default function Subject1Ch1() {
             <tr><th>분류 기준</th><th>유형</th><th>설명</th><th>예시</th></tr>
           </thead>
           <tbody>
-            <tr><td rowSpan="3">유무형</td><td>유형 엔터티</td><td>물리적 형태가 있음</td><td>사원, 물품, 강사</td></tr>
+            <tr><td rowSpan={3}>유무형</td><td>유형 엔터티</td><td>물리적 형태가 있음</td><td>사원, 물품, 강사</td></tr>
             <tr><td>개념 엔터티</td><td>물리적 형태 없음</td><td>조직, 보험상품</td></tr>
             <tr><td>사건 엔터티</td><td>업무 수행 시 발생</td><td>주문, 청구, 미납</td></tr>
-            <tr><td rowSpan="3">발생 시점</td><td>기본 엔터티</td><td>독립적으로 존재</td><td>사원, 부서, 고객</td></tr>
+            <tr><td rowSpan={3}>발생 시점</td><td>기본 엔터티</td><td>독립적으로 존재</td><td>사원, 부서, 고객</td></tr>
             <tr><td>중심 엔터티</td><td>기본에서 파생</td><td>계약, 주문</td></tr>
             <tr><td>행위 엔터티</td><td>2개 이상에서 파생</td><td>주문목록, 사원변경이력</td></tr>
           </tbody>
@@ -79,10 +79,10 @@ export default function Subject1Ch1() {
             <tr><th>분류</th><th>유형</th><th>설명</th><th>예시</th></tr>
           </thead>
           <tbody>
-            <tr><td rowSpan="3">특성</td><td>기본 속성</td><td>업무에서 직접 추출</td><td>이름, 전화번호</td></tr>
+            <tr><td rowSpan={3}>특성</td><td>기본 속성</td><td>업무에서 직접 추출</td><td>이름, 전화번호</td></tr>
             <tr><td>설계 속성</td><td>설계 과정에서 생성</td><td>코드, 일련번호</td></tr>
             <tr><td>파생 속성</td><td>다른 속성에서 계산</td><td>합계, 평균</td></tr>
-            <tr><td rowSpan="3">구성</td><td>PK 속성</td><td>엔터티의 고유 식별</td><td>사원번호</td></tr>
+            <tr><td rowSpan={3}>구성</td><td>PK 속성</td><td>엔터티의 고유 식별</td><td>사원번호</td></tr>
             <tr><td>FK 속성</td><td>다른 엔터티 참조</td><td>부서번호</td></tr>
             <tr><td>일반 속성</td><td>PK, FK 외의 속성</td><td>이름, 연봉</td></tr>
           </tbody>
@@ -129,13 +129,13 @@ export default function Subject1Ch1() {
             <tr><th>분류</th><th>유형</th><th>설명</th></tr>
           </thead>
           <tbody>
-            <tr><td rowSpan="2">대표성</td><td><strong>주식별자</strong></td><td>엔터티를 대표 (PK)</td></tr>
+            <tr><td rowSpan={2}>대표성</td><td><strong>주식별자</strong></td><td>엔터티를 대표 (PK)</td></tr>
             <tr><td>보조식별자</td><td>인스턴스 구분 가능하지만 대표 아님</td></tr>
-            <tr><td rowSpan="2">생성 여부</td><td>내부식별자</td><td>자체적으로 생성</td></tr>
+            <tr><td rowSpan={2}>생성 여부</td><td>내부식별자</td><td>자체적으로 생성</td></tr>
             <tr><td>외부식별자</td><td>다른 엔터티에서 받아옴 (FK)</td></tr>
-            <tr><td rowSpan="2">속성 수</td><td>단일식별자</td><td>하나의 속성으로 식별</td></tr>
+            <tr><td rowSpan={2}>속성 수</td><td>단일식별자</td><td>하나의 속성으로 식별</td></tr>
             <tr><td>복합식별자</td><td>여러 속성을 조합하여 식별</td></tr>
-            <tr><td rowSpan="2">대체 여부</td><td>본질식별자</td><td>업무에서 자연 발생</td></tr>
+            <tr><td rowSpan={2}>대체 여부</td><td>본질식별자</td><td>업무에서 자연 발생</td></tr>
             <tr><td>인조식별자</td><td>인위적으로 생성 (일련번호 등)</td></tr>
           </tbody>
         </table>

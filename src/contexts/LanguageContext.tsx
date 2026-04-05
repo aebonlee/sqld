@@ -1,16 +1,16 @@
 import { createContext, useContext, useState } from 'react';
 import { translations } from '../utils/translations';
 
-const LanguageContext = createContext();
+const LanguageContext = createContext<any>(null);
 
-export const LanguageProvider = ({ children }) => {
+export const LanguageProvider = ({ children }: any) => {
   const [language, setLanguage] = useState('ko');
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'ko' ? 'en' : 'ko');
   };
 
-  const t = (key) => {
+  const t = (key: any) => {
     const keys = key.split('.');
     let value = translations[language];
     for (const k of keys) {

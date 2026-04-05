@@ -1,6 +1,6 @@
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function BadgeCard({ badge }) {
+export default function BadgeCard({ badge }: any) {
   const { t } = useLanguage();
   return (
     <div className={`badge-card ${badge.earned ? 'earned' : 'locked'}`}>

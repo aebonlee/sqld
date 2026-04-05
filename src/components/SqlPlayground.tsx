@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-export default function SqlPlayground({ datasets }) {
+export default function SqlPlayground({ datasets }: any) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [sql, setSql] = useState('');
   const [result, setResult] = useState(null);
@@ -30,7 +30,7 @@ export default function SqlPlayground({ datasets }) {
           initDb(SQL, datasets[activeIdx]);
         }
       } catch (e) {
-        if (!cancelled) setError('sql.js 초기화 실패: ' + e.message);
+        if (!cancelled) setError('sql.js 초기화 실패: ' + (e as any).message);
       }
     })();
     return () => { cancelled = true; };
@@ -49,7 +49,7 @@ export default function SqlPlayground({ datasets }) {
       ds.insertSQL.split(';').filter(s => s.trim()).forEach(s => db.run(s + ';'));
       dbRef.current = db;
     } catch (e) {
-      setError('DB 초기화 실패: ' + e.message);
+      setError('DB 초기화 실패: ' + (e as any).message);
     }
     setLoading(false);
   }, []);
@@ -88,7 +88,7 @@ export default function SqlPlayground({ datasets }) {
     } catch (e) {
       const t1 = performance.now();
       setElapsed(t1 - t0);
-      setError(e.message);
+      setError((e as any).message);
     }
   }, [sql]);
 

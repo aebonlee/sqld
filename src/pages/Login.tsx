@@ -33,7 +33,7 @@ export default function Login() {
       if (provider === 'google') await signInWithGoogle();
       else if (provider === 'kakao') await signInWithKakao();
     } catch (err) {
-      setError(err.message || 'Authentication failed');
+      setError((err as any).message || 'Authentication failed');
     }
   };
 

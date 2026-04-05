@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SEOHead = ({ title, description }) => {
+const SEOHead = ({ title, description }: any) => {
   useEffect(() => {
     if (title) document.title = title;
     if (description) {

@@ -34,9 +34,9 @@ export default function Profile() {
   const earnedCount = earnedBadges.length;
   const displayName = profile?.display_name || user?.user_metadata?.display_name || user?.email?.split('@')[0] || '';
 
-  const hasPassedExam = Object.values(examResults).some(r => r.score / r.total >= 0.6);
+  const hasPassedExam = Object.values(examResults).some((r: any) => r.score / r.total >= 0.6);
   const bestExamScore = Object.values(examResults).length > 0
-    ? Math.max(...Object.values(examResults).map(r => Math.round(r.score / r.total * 100)))
+    ? Math.max(...Object.values(examResults).map((r: any) => Math.round(r.score / r.total * 100)))
     : null;
 
   const examCount = Object.keys(examResults).length;

@@ -87,10 +87,10 @@ export default function Subject1Ch2() {
             <tr><th>대상</th><th>기법</th><th>설명</th></tr>
           </thead>
           <tbody>
-            <tr><td rowSpan="3">테이블</td><td>테이블 병합</td><td>1:1, 1:N 관계 테이블 합침</td></tr>
+            <tr><td rowSpan={3}>테이블</td><td>테이블 병합</td><td>1:1, 1:N 관계 테이블 합침</td></tr>
             <tr><td>테이블 분할</td><td>수직/수평 분할</td></tr>
             <tr><td>테이블 추가</td><td>중복/통계/이력 테이블 추가</td></tr>
-            <tr><td rowSpan="2">컬럼</td><td>중복 컬럼 추가</td><td>JOIN 감소를 위해 중복 저장</td></tr>
+            <tr><td rowSpan={2}>컬럼</td><td>중복 컬럼 추가</td><td>JOIN 감소를 위해 중복 저장</td></tr>
             <tr><td>파생 컬럼 추가</td><td>계산 결과를 미리 저장</td></tr>
             <tr><td>관계</td><td>중복 관계 추가</td><td>빠른 경로 제공을 위한 관계 추가</td></tr>
           </tbody>
