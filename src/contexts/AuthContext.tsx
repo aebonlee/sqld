@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, setSharedSession, getSharedSession, clearSharedSession } from '../lib/supabase';
 
 const AuthContext = createContext<any>(null);
 
@@ -23,6 +23,9 @@ export function AuthProvider({ children }: any) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (session?.refresh_token) setSharedSession(session.refresh_token);
+        if (event === 'SIGNED_OUT') clearSharedSession();
+
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
@@ -32,6 +35,15 @@ export function AuthProvider({ children }: any) {
           setProfile(null);
         }
         if (event === 'INITIAL_SESSION') {
+          if (!currentUser) {
+            const rt = getSharedSession();
+            if (rt) {
+              try {
+                const { data } = await supabase!.auth.refreshSession({ refresh_token: rt });
+                if (!data.session) clearSharedSession();
+              } catch { clearSharedSession(); }
+            }
+          }
           setLoading(false);
         }
       }
