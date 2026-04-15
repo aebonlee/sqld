@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PublicLayout from './layouts/PublicLayout';
+import AdminGuard from './components/AdminGuard';
 
 function lazyLoad(importFn) {
   return lazy(() =>
@@ -37,6 +38,7 @@ const Playground = lazyLoad(() => import('./pages/Playground'));
 const Login = lazyLoad(() => import('./pages/Login'));
 const Profile = lazyLoad(() => import('./pages/Profile'));
 const NotFound = lazyLoad(() => import('./pages/NotFound'));
+const AdminDashboard = lazyLoad(() => import('./pages/admin/AdminDashboard'));
 
 function LoadingFallback() {
   return (
@@ -100,6 +102,9 @@ export default function App() {
           {/* Auth & Profile */}
           <Route path="login" element={<Login />} />
           <Route path="profile" element={<Profile />} />
+
+          {/* Admin */}
+          <Route path="admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />

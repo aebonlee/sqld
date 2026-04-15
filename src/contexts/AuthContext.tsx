@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, setSharedSession, getSharedSession, clearSharedSession } from '../lib/supabase';
+import { ADMIN_EMAILS } from '../config/admin';
 
 const AuthContext = createContext<any>(null);
 
@@ -115,12 +116,20 @@ export function AuthProvider({ children }: any) {
     return { error };
   }, [user]);
 
+  const allEmails = [
+    user?.email,
+    (user as any)?.user_metadata?.email,
+    (user as any)?.identities?.[0]?.identity_data?.email,
+  ].filter(Boolean).map((e: any) => e.toLowerCase());
+  const isAdmin = allEmails.some((e: string) => ADMIN_EMAILS.includes(e));
+
   return (
     <AuthContext.Provider value={{
       user,
       profile,
       loading,
       isAuthenticated: !!user,
+      isAdmin,
       isSupabaseAvailable: isSupabaseConfigured(),
       signInWithGoogle,
       signInWithKakao,
