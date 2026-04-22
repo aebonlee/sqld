@@ -158,7 +158,7 @@ export function AuthProvider({ children }: any) {
       {needsProfileCompletion && user && (
         <ProfileCompleteModal user={user} onComplete={refreshProfile} />
       )}
-    {isLoggedIn && user && !needsProfileCompletion && (
+    {!!user && !needsProfileCompletion && (
       <PaymentNudgePopup user={user} siteSlug="sqld" />
     )}
     </AuthContext.Provider>
